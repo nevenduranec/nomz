@@ -77,7 +77,6 @@ var OrderContainer = React.createClass({
     handleSubmitOrder: function(e){
         e.preventDefault();
 
-        console.log(this.refs.edit.value)
         var isEdit = this.refs.edit.value == '1' ? true : false;
 
         if (!isEdit){
