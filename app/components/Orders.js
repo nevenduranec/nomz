@@ -15,11 +15,11 @@ var ListNomz = React.createClass({
                     { item.nom }
                     { item.nomPrice }
                     { edit && <span onClick={ _this.props.removeItem.bind(null, item['.key'], item.user.uid) }>DELETE</span>}
-                    { edit && <span onClick={ _this.props.editItem.bind(null, index, item.user.uid) }>EDIT</span>}
+                    { edit && <span onClick={ _this.props.editItem.bind(null, index, item['.key']) }>EDIT</span>}
                 </li>
             );
         };
-        return <ul>{ this.props.items.map(createItem) }</ul>;
+        return <ul className="column small-12 no-bullet">{ this.props.items.map(createItem) }</ul>;
     }
 });
 
@@ -50,9 +50,8 @@ var OrderContainer = React.createClass({
                     pathname: '/'
                 });
             } else {
-                console.log(this.state.today)
-                var firebaseRef = firebase.database().ref(this.state.today);
-                this.bindAsArray(firebaseRef, 'items');
+                this.state.firebaseRef = firebase.database().ref(this.state.today);
+                this.bindAsArray(this.state.firebaseRef, 'items');
                 this.state.user = user;
             }
         }.bind(this));
@@ -61,23 +60,20 @@ var OrderContainer = React.createClass({
 
     removeItem: function(key, uid) {
         if (this.state.user.uid === uid) {
-            var firebaseRef = firebase.database().ref(this.state.today);
-            firebaseRef.child(key).remove();
+            this.state.firebaseRef.child(key).remove();
         }
     },
 
-    editItem: function(index, uid) {
-        this.refs.edit.value = 1;
-
-        if (this.state.user.uid === uid) {
-            console.log(this.state.items[index]);
-        }
+    editItem: function(index, key) {
+        this.refs.edit.value = key;
+        this.refs.nom.value = this.state.items[index].nom;
+        this.refs.nomPrice.value = this.state.items[index].nomPrice;
     },
 
     handleSubmitOrder: function(e){
         e.preventDefault();
 
-        var isEdit = this.refs.edit.value == '1' ? true : false;
+        var isEdit = this.refs.edit.value.length > 0 ? true : false;
 
         if (!isEdit){
             this.firebaseRefs['items'].push({
@@ -89,16 +85,20 @@ var OrderContainer = React.createClass({
                 nom: this.refs.nom.value,
                 nomPrice: this.refs.nomPrice.value
             });
-
-            this.refs.orderForm.reset();
         } else {
-            console.log('EDIT');
+            var child = this.state.firebaseRef.child(this.refs.edit.value);
+            child.update({
+                nom: this.refs.nom.value,
+                nomPrice: this.refs.nomPrice.value
+            });
         }
+
+        this.refs.orderForm.reset();
 
     },
     render: function() {
         return (
-            <div>
+            <div className="column small-12">
                 <ListNomz items={this.state.items} removeItem={ this.removeItem } editItem={ this.editItem } user={this.state.user} />
                 <div className="column small-12">
                     <form ref="orderForm" onSubmit={this.handleSubmitOrder}>

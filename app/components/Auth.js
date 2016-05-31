@@ -42,7 +42,7 @@ var Auth = React.createClass({
     render: function () {
         return (
             <div>
-                <button className="button" onClick={this.signInWithGoogle} type="button">Google</button>
+                <button className="button" onClick={this.signInWithGoogle}>Google</button>
             </div>
         )
     }
