@@ -102,7 +102,7 @@ var OrderContainer = React.createClass({
                 <ListNomz items={this.state.items} removeItem={ this.removeItem } editItem={ this.editItem } user={this.state.user} />
                 <div className="column small-12">
                     <form ref="orderForm" onSubmit={this.handleSubmitOrder}>
-                        <input type="hidden" ref="edit" value="0" />
+                        <input type="hidden" ref="edit" value="" />
                         <label>
                             <input
                                 ref="nom"
