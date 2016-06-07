@@ -10,7 +10,7 @@ function List (props) {
         }
         return (
             <tr key={ index }>
-                <td>{ item.user.email.replace('@burza.hr','') }</td>
+                <td>{ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }</td>
                 <td className="full">{ item.nom }</td>
                 <td>{ item.nomPrice }</td>
                 <td className="time"><Timestamp date={ item.time } /></td>
