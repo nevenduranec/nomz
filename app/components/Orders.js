@@ -75,6 +75,13 @@ var OrderContainer = React.createClass({
         this.refs.orderForm.reset();
 
     },
+    signOut: function() {
+        firebase.auth().signOut().then(function() {
+          // Sign-out successful.
+        }, function(error) {
+          // An error happened.
+        });
+    },
     render: function() {
         return (
             <div className="column small-12">
@@ -115,6 +122,8 @@ var OrderContainer = React.createClass({
                         </button>
                     </div>
                 </form>
+
+                <button className="button" onClick={this.signOut}>Sign out</button>
             </div>
         )
     }
