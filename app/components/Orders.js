@@ -1,28 +1,6 @@
 var React = require('react');
 var ReactFireMixin = require('reactfire');
-
-var ListNomz = React.createClass({
-    render: function() {
-        var _this = this;
-        var createItem = function(item, index) {
-            var edit = false;
-            if (_this.props.user.uid === item.user.uid){
-                edit = true;
-            }
-            return (
-                <li key={ index }>
-                    { item.user.email }
-                    { item.nom }
-                    { item.nomPrice }
-                    { edit && <span onClick={ _this.props.removeItem.bind(null, item['.key'], item.user.uid) }>DELETE</span>}
-                    { edit && <span onClick={ _this.props.editItem.bind(null, index, item['.key']) }>EDIT</span>}
-                </li>
-            );
-        };
-        return <ul className="column small-12 no-bullet">{ this.props.items.map(createItem) }</ul>;
-    }
-});
-
+var ListNomz = require('./ListNomz');
 
 var OrderContainer = React.createClass({
 
@@ -58,13 +36,13 @@ var OrderContainer = React.createClass({
 
     },
 
-    removeItem: function(key, uid) {
+    handleRemoveItem: function(key, uid) {
         if (this.state.user.uid === uid) {
             this.state.firebaseRef.child(key).remove();
         }
     },
 
-    editItem: function(index, key) {
+    handleEditItem: function(index, key) {
         this.refs.edit.value = key;
         this.refs.nom.value = this.state.items[index].nom;
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
@@ -99,7 +77,13 @@ var OrderContainer = React.createClass({
     render: function() {
         return (
             <div className="column small-12">
-                <ListNomz items={this.state.items} removeItem={ this.removeItem } editItem={ this.editItem } user={this.state.user} />
+                <ListNomz
+                    items={this.state.items}
+                    onRemoveItem={ this.handleRemoveItem }
+                    onEditItem={ this.handleEditItem }
+                    user={this.state.user}
+                />
+
                 <div className="column small-12">
                     <form ref="orderForm" onSubmit={this.handleSubmitOrder}>
                         <input type="hidden" ref="edit" value="" />
@@ -114,14 +98,14 @@ var OrderContainer = React.createClass({
                             <input
                                 ref="nomPrice"
                                 placeholder="How much does it cost?"
-                                type="text"
+                                type="number"
                             />
                         </label>
                         <button
                             className="button"
                             type="submit"
                         >
-                            Continue
+                            Order!
                         </button>
                     </form>
                 </div>

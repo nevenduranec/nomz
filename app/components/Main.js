@@ -14,6 +14,7 @@ var Main = React.createClass({
   render: function () {
     return (
       <div className='row'>
+        <div className="column small-12"><img src={require('../assets/images/logo.png')} /></div>
         {this.props.children}
       </div>
     )
