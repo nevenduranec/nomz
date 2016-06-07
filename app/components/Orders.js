@@ -61,7 +61,8 @@ var OrderContainer = React.createClass({
                     uid: this.state.user.uid
                 },
                 nom: this.refs.nom.value,
-                nomPrice: this.refs.nomPrice.value
+                nomPrice: this.refs.nomPrice.value,
+                time: Date.now()
             });
         } else {
             var child = this.state.firebaseRef.child(this.refs.edit.value);
@@ -77,6 +78,7 @@ var OrderContainer = React.createClass({
     render: function() {
         return (
             <div className="column small-12">
+
                 <ListNomz
                     items={this.state.items}
                     onRemoveItem={ this.handleRemoveItem }
@@ -84,9 +86,9 @@ var OrderContainer = React.createClass({
                     user={this.state.user}
                 />
 
-                <div className="column small-12">
-                    <form ref="orderForm" onSubmit={this.handleSubmitOrder}>
-                        <input type="hidden" ref="edit" value="" />
+                <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
+                    <input type="hidden" ref="edit" value="" />
+                    <div className="column small-8">
                         <label>
                             <input
                                 ref="nom"
@@ -94,21 +96,25 @@ var OrderContainer = React.createClass({
                                 type="text"
                             />
                         </label>
+                    </div>
+                    <div className="column small-2">
                         <label>
                             <input
                                 ref="nomPrice"
-                                placeholder="How much does it cost?"
+                                placeholder="$$$$"
                                 type="number"
                             />
                         </label>
+                    </div>
+                    <div className="column">
                         <button
-                            className="button"
+                            className="button expanded"
                             type="submit"
                         >
                             Order!
                         </button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         )
     }

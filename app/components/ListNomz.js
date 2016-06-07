@@ -1,5 +1,6 @@
 var React = require('react');
-var PropTypes = React.PropTypes
+var PropTypes = React.PropTypes;
+var Timestamp = require('react-timeago').default;
 
 function List (props) {
     var createItem = function(item, index) {
@@ -8,15 +9,16 @@ function List (props) {
             edit = true;
         }
         return (
-            <li key={ index }>
-                { item.user.email.replace('@burza.hr','') }
-                { item.nom }
-                { item.nomPrice }
-                { edit && <span className="button-group small"><span className="button alert" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><span className="fa fa-trash fa-lg"></span></span><span className="button success" onClick={ props.onEditItem.bind(null, index, item['.key']) }><span className="fa fa-pencil fa-lg"></span></span></span>}
-            </li>
+            <tr key={ index }>
+                <td>{ item.user.email.replace('@burza.hr','') }</td>
+                <td>{ item.nom }</td>
+                <td>{ item.nomPrice }</td>
+                <td><Timestamp date={ item.time } /></td>
+                { edit && <td><span className="button-group small"><span className="button alert" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><span className="fa fa-trash fa-lg"></span></span><span className="button success" onClick={ props.onEditItem.bind(null, index, item['.key']) }><span className="fa fa-pencil fa-lg"></span></span></span></td>}
+            </tr>
         );
     };
-    return <ul className="column small-12 no-bullet">{ props.items.map(createItem) }</ul>;
+    return <table className="hover stack"><thead><tr><th>Name</th><th>Nom</th><th>Price</th><th>Time</th><th>Actions</th></tr></thead><tbody>{ props.items.map(createItem) }</tbody></table>;
 }
 
 List.propTypes = {
