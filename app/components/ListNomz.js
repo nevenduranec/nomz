@@ -11,9 +11,9 @@ function List (props) {
         return (
             <tr key={ index }>
                 <td>{ item.user.email.replace('@burza.hr','') }</td>
-                <td>{ item.nom }</td>
+                <td className="full">{ item.nom }</td>
                 <td>{ item.nomPrice }</td>
-                <td><Timestamp date={ item.time } /></td>
+                <td className="time"><Timestamp date={ item.time } /></td>
                 { edit && <td><span className="button-group small"><span className="button alert" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><span className="fa fa-trash fa-lg"></span></span><span className="button success" onClick={ props.onEditItem.bind(null, index, item['.key']) }><span className="fa fa-pencil fa-lg"></span></span></span></td>}
             </tr>
         );
