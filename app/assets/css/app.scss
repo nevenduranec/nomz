@@ -11,6 +11,12 @@ img {
     margin-top: 50px;
     background: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    padding: 10px;
+
+    .row {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
 }
 
 .collection {
