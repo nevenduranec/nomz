@@ -29,10 +29,32 @@ function List (props) {
             </li>
         );
     };
-    return <ul className="collection with-header"><li className="collection-header center-align"><h4>First Names</h4></li>{ props.items.map(createItem) }</ul>;
+
+
+    return props.isLoading === true ?
+        <div className="col s12 center-align">
+            <div className="preloader-wrapper big active">
+                <div className="spinner-layer spinner-blue">
+                    <div className="circle-clipper left">
+                        <div className="circle"></div>
+                    </div>
+                    <div className="gap-patch">
+                        <div className="circle"></div>
+                    </div>
+                    <div className="circle-clipper right">
+                        <div className="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    :
+    <ul className="collection with-header"><li className="collection-header center-align"><h4>First Names</h4></li>{ props.items.map(createItem) }</ul>
+
+
 }
 
 List.propTypes = {
+    isLoading: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
     onEditItem: PropTypes.func.isRequired,

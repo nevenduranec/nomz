@@ -15,6 +15,7 @@ var OrderContainer = React.createClass({
             today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
 
         return {
+            loading: true,
             items: [],
             today: today
         }
@@ -41,6 +42,10 @@ var OrderContainer = React.createClass({
             constrain_width: true,
             constrainwidth: true
         });
+
+        firebase.database().ref(this.state.today).on('value', function(snapshot) {
+            this.state.loading = false;
+        }.bind(this));
     },
 
     handleRemoveItem: function(key, uid) {
@@ -101,6 +106,7 @@ var OrderContainer = React.createClass({
                     onRemoveItem={ this.handleRemoveItem }
                     onEditItem={ this.handleEditItem }
                     user={this.state.user}
+                    isLoading={this.state.loading}
                 />
 
                 <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
