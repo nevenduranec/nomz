@@ -12,8 +12,10 @@ function List (props) {
             <li className="collection-item avatar" data-key={ index }>
                 { item.user.photoURL && <img src={ item.user.photoURL } alt={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } className="circle" /> }
                 <span className="collection-title">{ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } - { item.nom }</span>
-                <p>
-                    { item.nomPrice } <br />
+                <p className="collection-price">
+                    { item.nomPrice }
+                </p>
+                <p className="collection-time">
                     <Timestamp date={ item.time } />
                 </p>
                 <div className="secondary-content"><a href="#!" className="dropdown-button btn-floating deep-orange accent-2 waves-effect waves-light" data-activates={ 'edit-dropdown-' + index }><i className="material-icons left">edit</i></a></div>

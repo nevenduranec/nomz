@@ -46,7 +46,6 @@ var Main = React.createClass({
                         <a href="#!" className="brand-logo center"><img src={require('../assets/images/logo.png')} /></a>
                         <ul className="right hide-on-med-and-down">
                             {this.state.loggedIn && <li><a onClick={this.signOut}>Logout</a></li>}
-                            {this.state.loggedIn && <li><a onClick={this.signOut}>Logout</a></li>}
                         </ul>
                     </div>
                 </nav>

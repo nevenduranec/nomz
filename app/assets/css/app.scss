@@ -19,6 +19,38 @@ img {
     border: 0;
 }
 
+.collection-title,
+.collection-price,
+.collection-time {
+    display: block;
+}
+
+
+@media screen and (min-width: 600px) {
+
+    .collection .collection-item.avatar {
+        min-height: auto;
+    }
+
+    .collection.with-header .collection-item.avatar {
+        padding-left: 30px;
+    }
+
+    .collection .collection-item.avatar .circle {
+        position: relative;
+        left: 0;
+    }
+
+    .collection-title,
+    .collection-price,
+    .collection-time {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+}
+
+
 .dropdown-content {
     white-space: nowrap;
     min-width: 120px;
