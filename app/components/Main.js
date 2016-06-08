@@ -40,21 +40,21 @@ var Main = React.createClass({
     render: function () {
         return (
             <div>
-            <div className="navbar-fixed">
-                <nav>
-                    <div className="nav-wrapper">
-                        <a href="#!" className="brand-logo center"><img src={require('../assets/images/logo.png')} /></a>
-                        <ul className="right hide-on-med-and-down">
-                            {this.state.loggedIn && <li><a onClick={this.signOut}>Logout</a></li>}
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-            <div className='container Main'>
-                <div className='row'>
-                    {this.props.children}
+                <div className="navbar-fixed">
+                    <nav>
+                        <div className="nav-wrapper">
+                            <a href="#!" className="brand-logo center"><img src={require('../assets/images/logo.png')} /></a>
+                            <ul className="right hide-on-med-and-down">
+                                {this.state.loggedIn && <li><a onClick={this.signOut}>Logout</a></li>}
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
-            </div>
+                <div className='container Main'>
+                    <div className='row'>
+                        {this.props.children}
+                    </div>
+                </div>
             </div>
         )
     }

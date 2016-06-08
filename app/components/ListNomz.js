@@ -11,6 +11,7 @@ function List (props) {
         return (
             <li className="collection-item avatar" data-key={ index }>
                 { item.user.photoURL && <img src={ item.user.photoURL } alt={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } className="circle" /> }
+                { !item.user.photoURL && <i className="material-icons circle red">perm_identity</i> }
                 <span className="collection-title">{ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } - { item.nom }</span>
                 <p className="collection-price">
                     { item.nomPrice }
