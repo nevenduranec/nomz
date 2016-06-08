@@ -13,9 +13,11 @@ firebase.initializeApp(firebaseConfig);
 var Main = React.createClass({
   render: function () {
     return (
+      <div className='container'>
       <div className='row'>
-        <div className="column small-12"><img src={require('../assets/images/logo.png')} /></div>
+        <div className="col s12"><img src={require('../assets/images/logo.png')} /></div>
         {this.props.children}
+      </div>
       </div>
     )
   }

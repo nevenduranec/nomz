@@ -36,6 +36,13 @@ var OrderContainer = React.createClass({
 
     },
 
+    componentDidUpdate: function() {
+        $('.dropdown-button').dropdown({
+            constrain_width: true,
+            constrainwidth: true
+        });
+    },
+
     handleRemoveItem: function(key, uid) {
         if (this.state.user.uid === uid) {
             this.state.firebaseRef.child(key).remove();
@@ -46,6 +53,7 @@ var OrderContainer = React.createClass({
         this.refs.edit.value = key;
         this.refs.nom.value = this.state.items[index].nom;
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
+        Materialize.updateTextFields();
     },
 
     handleSubmitOrder: function(e){
@@ -68,11 +76,13 @@ var OrderContainer = React.createClass({
             var child = this.state.firebaseRef.child(this.refs.edit.value);
             child.update({
                 nom: this.refs.nom.value,
-                nomPrice: this.refs.nomPrice.value
+                nomPrice: this.refs.nomPrice.value,
+                time: Date.now()
             });
         }
 
         this.refs.orderForm.reset();
+        Materialize.updateTextFields();
 
     },
     signOut: function() {
@@ -84,7 +94,7 @@ var OrderContainer = React.createClass({
     },
     render: function() {
         return (
-            <div className="column small-12">
+            <div className="col s12">
 
                 <ListNomz
                     items={this.state.items}
@@ -95,30 +105,32 @@ var OrderContainer = React.createClass({
 
                 <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
                     <input type="hidden" ref="edit" value="" />
-                    <div className="column small-8">
-                        <label>
-                            <input
-                                ref="nom"
-                                placeholder="What do you want to order?"
-                                type="text"
-                            />
-                        </label>
+                    <div className="input-field col s8">
+                        <input
+                            ref="nom"
+                            type="text"
+                            id="nom"
+                            className="validate"
+                            required
+                        />
+                        <label htmlFor="nom">What do you want to order?</label>
                     </div>
-                    <div className="column small-2">
-                        <label>
-                            <input
-                                ref="nomPrice"
-                                placeholder="$$$$"
-                                type="number"
-                            />
-                        </label>
+                    <div className="input-field col s2">
+                        <input
+                            ref="nomPrice"
+                            type="number"
+                            id="nomPrice"
+                            className="validate"
+                            required
+                        />
+                        <label htmlFor="nomPrice">How much does it cost?</label>
                     </div>
-                    <div className="column">
+                    <div className="input-field col s2">
                         <button
-                            className="button expanded"
+                            className="btn blue lighten-1 waves-effect waves-light btn-large"
                             type="submit"
                         >
-                            Order!
+                            <i className="material-icons right">send</i> Order!
                         </button>
                     </div>
                 </form>

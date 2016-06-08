@@ -9,16 +9,27 @@ function List (props) {
             edit = true;
         }
         return (
-            <tr key={ index }>
-                <td>{ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }</td>
-                <td className="full">{ item.nom }</td>
-                <td>{ item.nomPrice }</td>
-                <td className="time"><Timestamp date={ item.time } /></td>
-                { edit && <td><span className="button-group small"><span className="button alert" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><span className="fa fa-trash fa-lg"></span></span><span className="button success" onClick={ props.onEditItem.bind(null, index, item['.key']) }><span className="fa fa-pencil fa-lg"></span></span></span></td>}
-            </tr>
+            <li className="collection-item avatar" data-key={ index }>
+                <img src="" alt={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } className="circle" />
+                <span className="collection-title">{ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } - { item.nom }</span>
+                <p>
+                    { item.nomPrice } <br />
+                    <Timestamp date={ item.time } />
+                </p>
+                { edit && <div className="secondary-content"><a href="#!" className="dropdown-button btn deep-orange accent-2 waves-effect waves-light" data-activates={ 'edit-dropdown-' + index }><i className="material-icons left">edit</i> Actions</a></div>}
+                {
+                    edit
+                    &&
+                    <ul id={ 'edit-dropdown-' + index } className="dropdown-content">
+                        <li className="orange lighten-2"><span className="white-text" onClick={ props.onEditItem.bind(null, index, item['.key']) }><i className="material-icons left">edit</i>Edit</span></li>
+                        <li className="divider"></li>
+                        <li className="red"><span className="white-text" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><i className="material-icons left">delete</i>Delete</span></li>
+                    </ul>
+                }
+            </li>
         );
     };
-    return <table className="hover stack"><thead><tr><th>Name</th><th>Nom</th><th>Price</th><th>Time</th><th>Actions</th></tr></thead><tbody>{ props.items.map(createItem) }</tbody></table>;
+    return <ul className="collection with-header"><li className="collection-header center-align"><h4>First Names</h4></li>{ props.items.map(createItem) }</ul>;
 }
 
 List.propTypes = {
