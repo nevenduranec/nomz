@@ -43,9 +43,9 @@ var Main = React.createClass({
                 <div className="navbar-fixed">
                     <nav>
                         <div className="nav-wrapper">
-                            <a href="#!" className="brand-logo center"><img src={require('../assets/images/logo.png')} /></a>
+                            <a href="#!" className="brand-logo center"><img src={require('../assets/images/logo_burza.png')} /><img src={require('../assets/images/logo.png')} /></a>
                             <ul className="right hide-on-med-and-down">
-                                {this.state.loggedIn && <li><a onClick={this.signOut}>Logout</a></li>}
+                                {this.state.loggedIn && <li><a onClick={this.signOut}><i className="material-icons left">settings_power</i>Logout</a></li>}
                             </ul>
                         </div>
                     </nav>

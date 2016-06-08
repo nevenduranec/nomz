@@ -74,12 +74,19 @@ img {
 nav {
     height: 84px;
     line-height: 84px;
-    background: #fff;
+    background: #3b372f;
+
+    .nav-wrapper i {
+        height: 84px;
+        line-height: 84px;
+    }
 
     .brand-logo {
-        padding: 10px 0;
-        height: 100%;
+        display: block;
+        height: 80%;
         img {
+            display: inline-block;
+            vertical-align: middle;
             max-height: 100%;
         }
     }
