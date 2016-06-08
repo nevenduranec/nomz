@@ -1,8 +1,43 @@
+html {
+    background: url(../images/desk.jpg);
+}
+
 img {
     max-width: 100%;
     height: auto;
 }
 
+.Main {
+    margin-top: 50px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
 .collection {
     overflow: visible;
+    margin: 0;
+    border: 0;
+}
+
+.dropdown-content {
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.navbar-fixed {
+    height: 84px;
+}
+
+nav {
+    height: 84px;
+    line-height: 84px;
+    background: #fff;
+
+    .brand-logo {
+        padding: 10px 0;
+        height: 100%;
+        img {
+            max-height: 100%;
+        }
+    }
 }

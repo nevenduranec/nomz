@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactFireMixin = require('reactfire');
 var ListNomz = require('./ListNomz');
+var ReactDOM = require('react-dom');
 
 var OrderContainer = React.createClass({
 
@@ -17,7 +18,8 @@ var OrderContainer = React.createClass({
         return {
             loading: true,
             items: [],
-            today: today
+            nomzRef: today + '/nomz/',
+            placesRef: today + '/places/'
         }
     },
 
@@ -29,9 +31,10 @@ var OrderContainer = React.createClass({
                     pathname: '/'
                 });
             } else {
-                this.state.firebaseRef = firebase.database().ref(this.state.today);
-                this.bindAsArray(this.state.firebaseRef, 'items');
+                this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
+                this.bindAsArray(this.state.firebaseRefNomz, 'items');
                 this.state.user = user;
+                this.state.loggedIn = true;
             }
         }.bind(this));
 
@@ -39,26 +42,34 @@ var OrderContainer = React.createClass({
 
     componentDidUpdate: function() {
         $('.dropdown-button').dropdown({
-            constrain_width: true,
-            constrainwidth: true
+            constrain_width: false,
+            constrainwidth: false
         });
 
-        firebase.database().ref(this.state.today).on('value', function(snapshot) {
+        firebase.database().ref(this.state.nomzRef).on('value', function(snapshot) {
             this.state.loading = false;
         }.bind(this));
     },
 
-    handleRemoveItem: function(key, uid) {
+    handleRemoveItem: function(key, uid, type) {
         if (this.state.user.uid === uid) {
-            this.state.firebaseRef.child(key).remove();
+            this.state.firebaseRefNomz.child(key).remove();
         }
     },
 
-    handleEditItem: function(index, key) {
+    handleEditItem: function(index, key, type) {
         this.refs.edit.value = key;
         this.refs.nom.value = this.state.items[index].nom;
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
         Materialize.updateTextFields();
+        $('#order-modal').openModal();
+    },
+
+    handlePlusOne: function(index, key) {
+        Materialize.updateTextFields();
+        this.refs.nom.value = this.state.items[index].nom;
+        this.refs.nomPrice.value = this.state.items[index].nomPrice;
+        this.refs.submit.click();
     },
 
     handleSubmitOrder: function(e){
@@ -71,14 +82,15 @@ var OrderContainer = React.createClass({
                 user: {
                     name: this.state.user.displayName,
                     email: this.state.user.email,
-                    uid: this.state.user.uid
+                    uid: this.state.user.uid,
+                    photoURL: this.state.user.photoURL
                 },
                 nom: this.refs.nom.value,
                 nomPrice: this.refs.nomPrice.value,
                 time: Date.now()
             });
         } else {
-            var child = this.state.firebaseRef.child(this.refs.edit.value);
+            var child = this.state.firebaseRefNomz.child(this.refs.edit.value);
             child.update({
                 nom: this.refs.nom.value,
                 nomPrice: this.refs.nomPrice.value,
@@ -88,14 +100,12 @@ var OrderContainer = React.createClass({
 
         this.refs.orderForm.reset();
         Materialize.updateTextFields();
+        this.openCloseModal('close', '#order-modal');
+
 
     },
-    signOut: function() {
-        firebase.auth().signOut().then(function() {
-          // Sign-out successful.
-        }, function(error) {
-          // An error happened.
-        });
+    openCloseModal: function(event, id) {
+        event === 'open' ? $(id).openModal() : $(id).closeModal();
     },
     render: function() {
         return (
@@ -105,10 +115,14 @@ var OrderContainer = React.createClass({
                     items={this.state.items}
                     onRemoveItem={ this.handleRemoveItem }
                     onEditItem={ this.handleEditItem }
+                    onPlusOne={ this.handlePlusOne }
                     user={this.state.user}
                     isLoading={this.state.loading}
                 />
 
+                <div id="order-modal" className="modal bottom-sheet">
+                <div className="modal-content">
+                <h1>Your order</h1>
                 <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
                     <input type="hidden" ref="edit" value="" />
                     <div className="input-field col s8">
@@ -135,13 +149,20 @@ var OrderContainer = React.createClass({
                         <button
                             className="btn blue lighten-1 waves-effect waves-light btn-large"
                             type="submit"
+                            ref="submit"
                         >
                             <i className="material-icons right">send</i> Order!
                         </button>
                     </div>
                 </form>
+                </div>
+                </div>
 
-                <button className="button" onClick={this.signOut}>Sign out</button>
+                <div className="fixed-action-btn" onClick={this.openCloseModal.bind(null, 'open', '#order-modal')}>
+                    <a className="btn-floating btn-large red">
+                        <i className="large material-icons">add</i>
+                    </a>
+                </div>
             </div>
         )
     }
