@@ -73,7 +73,7 @@ var OrderContainer = React.createClass({
         this.refs.nom.value = this.state.items[index].nom;
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
         Materialize.updateTextFields();
-        $('#order-modal').openModal();
+        this.openCloseModal('open', '#order-modal');
     },
 
     handlePlusOne: function(index, key) {
@@ -118,7 +118,6 @@ var OrderContainer = React.createClass({
     openCloseModal: function(event, id) {
         if (event === 'open') {
             $(id).openModal();
-            this.refs.orderForm.nom.focus();
         } else {
             $(id).closeModal();
         }
