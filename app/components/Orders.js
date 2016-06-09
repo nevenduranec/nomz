@@ -16,6 +16,7 @@ var OrderContainer = React.createClass({
             today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
 
         return {
+            noResults: false,
             loading: true,
             items: [],
             nomzRef: today + '/nomz/',
@@ -40,6 +41,14 @@ var OrderContainer = React.createClass({
 
     },
 
+    componentDidMount: function(){
+        firebase.database().ref(this.state.nomzRef).on('value', function(snapshot) {
+            if(!snapshot.val()){
+                this.state.noResults = true;
+            }
+        }.bind(this));
+    },
+
     componentDidUpdate: function() {
         $('.dropdown-button').dropdown({
             constrain_width: false,
@@ -49,6 +58,7 @@ var OrderContainer = React.createClass({
         firebase.database().ref(this.state.nomzRef).on('value', function(snapshot) {
             this.state.loading = false;
         }.bind(this));
+
     },
 
     handleRemoveItem: function(key, uid, type) {
@@ -118,6 +128,7 @@ var OrderContainer = React.createClass({
                     onPlusOne={ this.handlePlusOne }
                     user={this.state.user}
                     isLoading={this.state.loading}
+                    noResults={this.state.noResults}
                 />
 
                 <div id="order-modal" className="modal bottom-sheet">

@@ -31,9 +31,9 @@ function List (props) {
         );
     };
 
-
-    return props.isLoading === true ?
-        <div className="col s12 center-align">
+    console.log(props.noResults);
+    if (props.isLoading === true && props.noResults === false) {
+        return <div className="col s12 center-align">
             <div className="preloader-wrapper big active">
                 <div className="spinner-layer spinner-blue">
                     <div className="circle-clipper left">
@@ -48,13 +48,17 @@ function List (props) {
                 </div>
             </div>
         </div>
-    :
-    <ul className="collection with-header"><li className="collection-header center-align"><h1>Todays orders</h1></li>{ props.items.map(createItem) }</ul>
+    } else {
+        return <ul className="collection with-header"><li className="collection-header center-align"><h1>Todays orders</h1></li>{ props.items.map(createItem) }</ul>
+    }
+
+
 
 
 }
 
 List.propTypes = {
+    noResults: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
