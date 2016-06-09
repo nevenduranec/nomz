@@ -31,8 +31,9 @@ function List (props) {
         );
     };
 
-    console.log(props.noResults);
-    if (props.isLoading === true && props.noResults === false) {
+    console.log('loading:', props.isLoading);
+    console.log('noResults:', props.noResults);
+    if (props.isLoading === true) {
         return <div className="col s12 center-align">
             <div className="preloader-wrapper big active">
                 <div className="spinner-layer spinner-blue">
@@ -49,7 +50,11 @@ function List (props) {
             </div>
         </div>
     } else {
-        return <ul className="collection with-header"><li className="collection-header center-align"><h1>Todays orders</h1></li>{ props.items.map(createItem) }</ul>
+        if (props.noResults){
+            return <div>No results for today</div>
+        } else {
+             return <ul className="collection with-header"><li className="collection-header center-align"><h1>Todays orders</h1></li>{ props.items.map(createItem) }</ul>
+        }
     }
 
 

@@ -39,14 +39,20 @@ var OrderContainer = React.createClass({
             }
         }.bind(this));
 
-    },
-
-    componentDidMount: function(){
         firebase.database().ref(this.state.nomzRef).on('value', function(snapshot) {
-            if(!snapshot.val()){
-                this.state.noResults = true;
+            if (!snapshot.val()) {
+                this.setState({
+                    loading: false,
+                    noResults: true
+                });
+            } else {
+                this.setState({
+                    noResults: false,
+                    loading: false
+                });
             }
         }.bind(this));
+
     },
 
     componentDidUpdate: function() {
@@ -54,11 +60,6 @@ var OrderContainer = React.createClass({
             constrain_width: false,
             constrainwidth: false
         });
-
-        firebase.database().ref(this.state.nomzRef).on('value', function(snapshot) {
-            this.state.loading = false;
-        }.bind(this));
-
     },
 
     handleRemoveItem: function(key, uid, type) {
@@ -115,7 +116,12 @@ var OrderContainer = React.createClass({
 
     },
     openCloseModal: function(event, id) {
-        event === 'open' ? $(id).openModal() : $(id).closeModal();
+        if (event === 'open') {
+            $(id).openModal();
+            this.refs.orderForm.nom.focus();
+        } else {
+            $(id).closeModal();
+        }
     },
     render: function() {
         return (
