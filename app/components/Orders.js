@@ -11,6 +11,11 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 
+const customContentStyle = {
+    width: '100%',
+    maxWidth: 'none',
+};
+
 var OrderContainer = React.createClass({
 
     mixins: [ReactFireMixin],
@@ -115,20 +120,20 @@ var OrderContainer = React.createClass({
     openCloseModal: function(event) {
         event === 'open' ? this.setState({open: true}) : this.setState({open: false});
     },
-    actions: [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={this.openCloseModal.bind(null,'close')}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.openCloseModal.bind(null,'close')}
-      />,
-    ],
     render: function() {
+        var actions = [
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onTouchTap={this.openCloseModal.bind(null,'close')}
+          />,
+          <FlatButton
+            label="Submit"
+            primary={true}
+            keyboardFocused={true}
+            onTouchTap={this.openCloseModal.bind(null,'close')}
+          />,
+        ];
         return (
             <MuiThemeProvider muiTheme={getMuiTheme()}>
             <div className="col s12">
@@ -143,52 +148,46 @@ var OrderContainer = React.createClass({
                     noResults={this.state.noResults}
                 />
 
-                <div id="order-modal" className="modal bottom-sheet">
-                <div className="modal-content">
-                <h1>Your order</h1>
-                <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
-                    <input type="hidden" ref="edit" value="" />
-                    <div className="input-field col s12 m5 l7">
-                        <input
-                            ref="nom"
-                            type="text"
-                            id="nom"
-                            className="validate"
-                            required
-                        />
-                        <label htmlFor="nom">What do you want to order?</label>
-                    </div>
-                    <div className="input-field col s12 m4 l3">
-                        <input
-                            ref="nomPrice"
-                            type="number"
-                            id="nomPrice"
-                            className="validate"
-                            required
-                        />
-                        <label htmlFor="nomPrice">How much does it cost?</label>
-                    </div>
-                    <div className="input-field col s12 m3 l2">
-                        <button
-                            className="btn blue lighten-1 waves-effect waves-light btn-large"
-                            type="submit"
-                            ref="submit"
-                        >
-                            <i className="material-icons right">send</i> Order!
-                        </button>
-                    </div>
-                </form>
-                </div>
-                </div>
-
 
                 <Dialog
-                title="Dialog With Actions"
+                title="Your order"
                 open={this.state.open}
                 actions={actions}
+                contentStyle={customContentStyle}
                 onRequestClose={this.openCloseModal.bind(null,'close')}
                 >
-                The actions in this window were passed in as an array of React objects.
+                    <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
+                        <input type="hidden" ref="edit" value="" />
+                        <div className="input-field col s12 m5 l7">
+                            <input
+                                ref="nom"
+                                type="text"
+                                id="nom"
+                                className="validate"
+                                required
+                            />
+                            <label htmlFor="nom">What do you want to order?</label>
+                        </div>
+                        <div className="input-field col s12 m4 l3">
+                            <input
+                                ref="nomPrice"
+                                type="number"
+                                id="nomPrice"
+                                className="validate"
+                                required
+                            />
+                            <label htmlFor="nomPrice">How much does it cost?</label>
+                        </div>
+                        <div className="input-field col s12 m3 l2">
+                            <button
+                                className="btn blue lighten-1 waves-effect waves-light btn-large"
+                                type="submit"
+                                ref="submit"
+                            >
+                                <i className="material-icons right">send</i> Order!
+                            </button>
+                        </div>
+                    </form>
                 </Dialog>
 
                 <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open')}>

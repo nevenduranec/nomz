@@ -31,8 +31,7 @@ function List (props) {
         );
     };
 
-    console.log('loading:', props.isLoading);
-    console.log('noResults:', props.noResults);
+
     if (props.isLoading === true) {
         return <div className="col s12 center-align">
             <div className="preloader-wrapper big active">
