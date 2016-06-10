@@ -22,7 +22,13 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
                 },
                 {
                     test: /\.css$/,
-                    loader: "style-loader!css-loader!postcss-loader"
+                    loader: 'style!css?modules',
+                    include: /flexboxgrid/,
+                },
+                {
+                    test: /\.css$/,
+                    loader: "style-loader!css-loader!postcss-loader",
+                    exclude: /flexboxgrid/
                 },
                 {
                     test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,

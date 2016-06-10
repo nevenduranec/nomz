@@ -1,58 +1,84 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var Timestamp = require('react-timeago').default;
+const {Grid, Row, Col} = require('react-flexbox-grid');
 
-function List (props) {
+import CircularProgress from 'material-ui/CircularProgress';
+
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Avatar from 'material-ui/Avatar';
+import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+
+const iconButtonElement = (
+    <IconButton
+        touch={true}
+        tooltip="Actions"
+        tooltipPosition="bottom-right"
+    >
+        <MoreVertIcon color={grey400} />
+    </IconButton>
+);
+
+const rightIconMenu = (
+    <IconMenu iconButtonElement={iconButtonElement}>
+        <MenuItem>Reply</MenuItem>
+        <MenuItem>Forward</MenuItem>
+        <MenuItem>Delete</MenuItem>
+    </IconMenu>
+);
+
+
+
+function ListNomz (props) {
     var createItem = function(item, index) {
         var edit = false;
+        item.nom = '<h1>' + item.nom + '</h1>'; // TODO
         if (props.user.uid === item.user.uid){
             edit = true;
         }
         return (
-            <li className="collection-item avatar" data-key={ index }>
-                { item.user.photoURL && <img src={ item.user.photoURL } alt={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } className="circle" /> }
-                { !item.user.photoURL && <i className="material-icons circle red">perm_identity</i> }
-                <span className="collection-title">{ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } - { item.nom }</span>
-                <p className="collection-price">
-                    { item.nomPrice }
-                </p>
-                <p className="collection-time">
-                    <Timestamp date={ item.time } />
-                </p>
-                <div className="secondary-content"><a href="#!" className="dropdown-button btn-floating deep-orange accent-2 waves-effect waves-light" data-activates={ 'edit-dropdown-' + index }><i className="material-icons left">edit</i></a></div>
-
-                <ul id={ 'edit-dropdown-' + index } className="dropdown-content">
-                    <li className="green lighten-2"><span className="white-text" onClick={ props.onPlusOne.bind(null, index, item['.key']) }><i className="material-icons left">playlist_add</i>+1</span></li>
-                    { edit && <li className="orange lighten-2"><span className="white-text" onClick={ props.onEditItem.bind(null, index, item['.key']) }><i className="material-icons left">edit</i>Edit</span></li> }
-                    { edit && <li className="red"><span className="white-text" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><i className="material-icons left">delete</i>Delete</span></li> }
-                </ul>
-
-            </li>
+            <Col xs={12} key={ index }>
+            <List>
+                <ListItem
+                    disabled={true}
+                    leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
+                    rightIconButton={rightIconMenu}
+                    primaryText={ item.nom }
+                    secondaryText={
+                        <p>
+                            <span style={{color: darkBlack}}>{ item.nomPrice }</span><br />
+                            <Timestamp date={ item.time } />
+                        </p>
+                    }
+                    secondaryTextLines={2}
+                />
+                <Divider inset={true} />
+            </List>
+            </Col>
         );
+        // return (
+        //         <div className="secondary-content"><a href="#!" className="dropdown-button btn-floating deep-orange accent-2 waves-effect waves-light" data-activates={ 'edit-dropdown-' + index }><i className="material-icons left">edit</i></a></div>
+
+        //             <li className="green lighten-2"><span className="white-text" onClick={ props.onPlusOne.bind(null, index, item['.key']) }><i className="material-icons left">playlist_add</i>+1</span></li>
+        //             { edit && <li className="orange lighten-2"><span className="white-text" onClick={ props.onEditItem.bind(null, index, item['.key']) }><i className="material-icons left">edit</i>Edit</span></li> }
+        //             { edit && <li className="red"><span className="white-text" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><i className="material-icons left">delete</i>Delete</span></li> }
+
+        // );
     };
 
 
     if (props.isLoading === true) {
-        return <div className="col s12 center-align">
-            <div className="preloader-wrapper big active">
-                <div className="spinner-layer spinner-blue">
-                    <div className="circle-clipper left">
-                        <div className="circle"></div>
-                    </div>
-                    <div className="gap-patch">
-                        <div className="circle"></div>
-                    </div>
-                    <div className="circle-clipper right">
-                        <div className="circle"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        return <CircularProgress size={2} />
     } else {
         if (props.noResults){
-            return <div>No results for today</div>
+            return <Row>No results for today</Row>
         } else {
-             return <ul className="collection with-header"><li className="collection-header center-align"><h1>Todays orders</h1></li>{ props.items.map(createItem) }</ul>
+             return <Row><h1>Todays orders</h1>{ props.items.map(createItem) }</Row>
         }
     }
 
@@ -61,7 +87,7 @@ function List (props) {
 
 }
 
-List.propTypes = {
+ListNomz.propTypes = {
     noResults: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
@@ -71,4 +97,4 @@ List.propTypes = {
     user: PropTypes.object
 }
 
-module.exports = List;
+module.exports = ListNomz;

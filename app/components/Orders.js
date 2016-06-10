@@ -3,18 +3,13 @@ var ReactFireMixin = require('reactfire');
 var ListNomz = require('./ListNomz');
 var ReactDOM = require('react-dom');
 
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 
-const customContentStyle = {
-    width: '100%',
-    maxWidth: 'none',
-};
+const {Grid, Row, Col} = require('react-flexbox-grid');
+
 
 var OrderContainer = React.createClass({
 
@@ -34,7 +29,9 @@ var OrderContainer = React.createClass({
             items: [],
             nomzRef: today + '/nomz/',
             placesRef: today + '/places/',
-            open: false
+            orderModal: {
+                open: false
+            }
         }
     },
 
@@ -117,26 +114,27 @@ var OrderContainer = React.createClass({
 
 
     },
-    openCloseModal: function(event) {
-        event === 'open' ? this.setState({open: true}) : this.setState({open: false});
+    openCloseModal: function(event, modalType) {
+        event === 'open' ? this.setState({[modalType]: {open: true}}) : this.setState({[modalType]: {open: false}});
     },
     render: function() {
         var actions = [
           <FlatButton
             label="Cancel"
             primary={true}
-            onTouchTap={this.openCloseModal.bind(null,'close')}
+            onTouchTap={this.openCloseModal.bind(null,'close', 'orderModal')}
           />,
           <FlatButton
-            label="Submit"
+            label="Order"
             primary={true}
             keyboardFocused={true}
-            onTouchTap={this.openCloseModal.bind(null,'close')}
+            onTouchTap={this.openCloseModal.bind(null,'close', 'orderModal')}
           />,
         ];
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme()}>
-            <div className="col s12">
+
+            <Grid>
+
 
                 <ListNomz
                     items={this.state.items}
@@ -149,12 +147,12 @@ var OrderContainer = React.createClass({
                 />
 
 
+
                 <Dialog
                 title="Your order"
-                open={this.state.open}
+                open={this.state.orderModal.open}
                 actions={actions}
-                contentStyle={customContentStyle}
-                onRequestClose={this.openCloseModal.bind(null,'close')}
+                onRequestClose={this.openCloseModal.bind(null,'close', 'orderModal')}
                 >
                     <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
                         <input type="hidden" ref="edit" value="" />
@@ -190,11 +188,12 @@ var OrderContainer = React.createClass({
                     </form>
                 </Dialog>
 
-                <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open')}>
+                <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')}>
                     <ContentAdd />
                 </FloatingActionButton>
-            </div>
-            </MuiThemeProvider>
+
+            </Grid>
+
         )
     }
 });

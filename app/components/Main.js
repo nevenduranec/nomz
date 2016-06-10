@@ -10,6 +10,8 @@ var firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const {Grid, Row, Col} = require('react-flexbox-grid');
+
 var Main = React.createClass({
 
     getInitialState: function(){
@@ -39,23 +41,9 @@ var Main = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <div className="navbar-fixed">
-                    <nav>
-                        <div className="nav-wrapper">
-                            <a href="#!" className="brand-logo center"><img src={require('../assets/images/logo_burza.png')} /><img src={require('../assets/images/logo.png')} /></a>
-                            <ul className="right hide-on-med-and-down">
-                                {this.state.loggedIn && <li><a onClick={this.signOut}><i className="material-icons left">settings_power</i>Logout</a></li>}
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-                <div className='container Main'>
-                    <div className='row'>
-                        {this.props.children}
-                    </div>
-                </div>
-            </div>
+            <Grid>
+                {this.props.children}
+            </Grid>
         )
     }
 });
