@@ -1,5 +1,6 @@
 html {
-    background: url(../images/desk.jpg);
+    // background: url(../images/desk.jpg);
+    background-color: #e3e3e3;
 }
 
 img {
@@ -90,4 +91,9 @@ nav {
             max-height: 100%;
         }
     }
+}
+
+
+.modal.bottom-sheet {
+    max-height: 60%;
 }

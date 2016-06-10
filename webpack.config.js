@@ -15,7 +15,10 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
             loaders: [
                 {
                     test: /\.js$/, exclude: /node_modules/,
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    query: {
+                        presets: ['es2015', 'react']
+                    }
                 },
                 {
                     test: /\.css$/,
@@ -67,7 +70,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
             }),
             new webpack.DefinePlugin({
                 "process.env": {
-                    NODE_ENV: JSON.stringify("production")
+                    // NODE_ENV: JSON.stringify("production")
                 }
             })
         ]

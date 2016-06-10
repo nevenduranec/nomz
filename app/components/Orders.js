@@ -3,6 +3,13 @@ var ReactFireMixin = require('reactfire');
 var ListNomz = require('./ListNomz');
 var ReactDOM = require('react-dom');
 
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Dialog from 'material-ui/Dialog';
+
 var OrderContainer = React.createClass({
 
     mixins: [ReactFireMixin],
@@ -20,7 +27,8 @@ var OrderContainer = React.createClass({
             loading: true,
             items: [],
             nomzRef: today + '/nomz/',
-            placesRef: today + '/places/'
+            placesRef: today + '/places/',
+            open: false
         }
     },
 
@@ -55,13 +63,6 @@ var OrderContainer = React.createClass({
 
     },
 
-    componentDidUpdate: function() {
-        $('.dropdown-button').dropdown({
-            constrain_width: false,
-            constrainwidth: false
-        });
-    },
-
     handleRemoveItem: function(key, uid, type) {
         if (this.state.user.uid === uid) {
             this.state.firebaseRefNomz.child(key).remove();
@@ -72,12 +73,9 @@ var OrderContainer = React.createClass({
         this.refs.edit.value = key;
         this.refs.nom.value = this.state.items[index].nom;
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
-        Materialize.updateTextFields();
-        this.openCloseModal('open', '#order-modal');
     },
 
     handlePlusOne: function(index, key) {
-        Materialize.updateTextFields();
         this.refs.nom.value = this.state.items[index].nom;
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
         this.refs.submit.click();
@@ -110,20 +108,15 @@ var OrderContainer = React.createClass({
         }
 
         this.refs.orderForm.reset();
-        Materialize.updateTextFields();
-        this.openCloseModal('close', '#order-modal');
 
 
     },
-    openCloseModal: function(event, id) {
-        if (event === 'open') {
-            $(id).openModal();
-        } else {
-            $(id).closeModal();
-        }
+    openCloseModal: function(event) {
+        event === 'open' ? this.setState({open: true}) : this.setState({open: false});
     },
     render: function() {
         return (
+            <MuiThemeProvider muiTheme={getMuiTheme()}>
             <div className="col s12">
 
                 <ListNomz
@@ -141,7 +134,7 @@ var OrderContainer = React.createClass({
                 <h1>Your order</h1>
                 <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
                     <input type="hidden" ref="edit" value="" />
-                    <div className="input-field col s8">
+                    <div className="input-field col s12 m5 l7">
                         <input
                             ref="nom"
                             type="text"
@@ -151,7 +144,7 @@ var OrderContainer = React.createClass({
                         />
                         <label htmlFor="nom">What do you want to order?</label>
                     </div>
-                    <div className="input-field col s2">
+                    <div className="input-field col s12 m4 l3">
                         <input
                             ref="nomPrice"
                             type="number"
@@ -161,7 +154,7 @@ var OrderContainer = React.createClass({
                         />
                         <label htmlFor="nomPrice">How much does it cost?</label>
                     </div>
-                    <div className="input-field col s2">
+                    <div className="input-field col s12 m3 l2">
                         <button
                             className="btn blue lighten-1 waves-effect waves-light btn-large"
                             type="submit"
@@ -174,12 +167,20 @@ var OrderContainer = React.createClass({
                 </div>
                 </div>
 
-                <div className="fixed-action-btn" onClick={this.openCloseModal.bind(null, 'open', '#order-modal')}>
-                    <a className="btn-floating btn-large red">
-                        <i className="large material-icons">add</i>
-                    </a>
-                </div>
+
+                <Dialog
+                title="Dialog With Actions"
+                open={this.state.open}
+                onRequestClose={this.openCloseModal.bind(null,'close')}
+                >
+                The actions in this window were passed in as an array of React objects.
+                </Dialog>
+
+                <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open')}>
+                    <ContentAdd />
+                </FloatingActionButton>
             </div>
+            </MuiThemeProvider>
         )
     }
 });
