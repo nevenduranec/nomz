@@ -7,6 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 
@@ -114,6 +115,19 @@ var OrderContainer = React.createClass({
     openCloseModal: function(event) {
         event === 'open' ? this.setState({open: true}) : this.setState({open: false});
     },
+    actions: [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.openCloseModal.bind(null,'close')}
+      />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.openCloseModal.bind(null,'close')}
+      />,
+    ],
     render: function() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme()}>
@@ -171,6 +185,7 @@ var OrderContainer = React.createClass({
                 <Dialog
                 title="Dialog With Actions"
                 open={this.state.open}
+                actions={actions}
                 onRequestClose={this.openCloseModal.bind(null,'close')}
                 >
                 The actions in this window were passed in as an array of React objects.
