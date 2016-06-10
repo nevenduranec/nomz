@@ -14,6 +14,7 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
+
 const iconButtonElement = (
     <IconButton
         touch={true}
@@ -24,20 +25,12 @@ const iconButtonElement = (
     </IconButton>
 );
 
-const rightIconMenu = (
-    <IconMenu iconButtonElement={iconButtonElement}>
-        <MenuItem>Reply</MenuItem>
-        <MenuItem>Forward</MenuItem>
-        <MenuItem>Delete</MenuItem>
-    </IconMenu>
-);
-
-
 
 function ListNomz (props) {
+
     var createItem = function(item, index) {
         var edit = false;
-        item.nom = '<h1>' + item.nom + '</h1>'; // TODO
+
         if (props.user.uid === item.user.uid){
             edit = true;
         }
@@ -47,8 +40,14 @@ function ListNomz (props) {
                 <ListItem
                     disabled={true}
                     leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
-                    rightIconButton={rightIconMenu}
-                    primaryText={ item.nom }
+                    rightIconButton={
+                        <IconMenu iconButtonElement={iconButtonElement}>
+                            <MenuItem onTouchTap={props.onPlusOne.bind(null, item)}>+1</MenuItem>
+                            <MenuItem>Forward</MenuItem>
+                            <MenuItem>Delete</MenuItem>
+                        </IconMenu>
+                    }
+                    primaryText={<h1>{ item.nom }</h1>}
                     secondaryText={
                         <p>
                             <span style={{color: darkBlack}}>{ item.nomPrice }</span><br />

@@ -26,7 +26,7 @@ var OrderContainer = React.createClass({
         return {
             noResults: false,
             loading: true,
-            items: [],
+            itemsz: [], //tODO
             nomzRef: today + '/nomz/',
             placesRef: today + '/places/',
             orderModal: {
@@ -44,7 +44,7 @@ var OrderContainer = React.createClass({
                 });
             } else {
                 this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
-                this.bindAsArray(this.state.firebaseRefNomz, 'items');
+                this.bindAsArray(this.state.firebaseRefNomz, 'itemsz');
                 this.state.user = user;
                 this.state.loggedIn = true;
             }
@@ -78,10 +78,18 @@ var OrderContainer = React.createClass({
         this.refs.nomPrice.value = this.state.items[index].nomPrice;
     },
 
-    handlePlusOne: function(index, key) {
-        this.refs.nom.value = this.state.items[index].nom;
-        this.refs.nomPrice.value = this.state.items[index].nomPrice;
-        this.refs.submit.click();
+    handlePlusOne: function(item) {
+        this.firebasePush({
+            user: {
+                name: this.state.user.displayName,
+                email: this.state.user.email,
+                uid: this.state.user.uid,
+                photoURL: this.state.user.photoURL
+            },
+            nom: item.nom,
+            nomPrice: item.nomPrice,
+            time: Date.now()
+        });
     },
 
     handleSubmitOrder: function(e){
@@ -90,7 +98,7 @@ var OrderContainer = React.createClass({
         var isEdit = this.refs.edit.value.length > 0 ? true : false;
 
         if (!isEdit){
-            this.firebaseRefs['items'].push({
+            this.firebasePush({
                 user: {
                     name: this.state.user.displayName,
                     email: this.state.user.email,
@@ -117,6 +125,9 @@ var OrderContainer = React.createClass({
     openCloseModal: function(event, modalType) {
         event === 'open' ? this.setState({[modalType]: {open: true}}) : this.setState({[modalType]: {open: false}});
     },
+    firebasePush: function(obj) {
+        this.firebaseRefs['itemsz'].push(obj);
+    },
     render: function() {
         var actions = [
           <FlatButton
@@ -137,7 +148,7 @@ var OrderContainer = React.createClass({
 
 
                 <ListNomz
-                    items={this.state.items}
+                    items={this.state.itemsz}
                     onRemoveItem={ this.handleRemoveItem }
                     onEditItem={ this.handleEditItem }
                     onPlusOne={ this.handlePlusOne }

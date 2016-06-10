@@ -11,8 +11,12 @@ var Orders = require('../components/Orders');
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+const muiTheme = getMuiTheme({
+    //fontFamily: 'Roboto'
+});
+
 var routes = (
-    <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={hashHistory}>
             <Route path='/' component={Main}>
                 <IndexRoute component={Auth} />
