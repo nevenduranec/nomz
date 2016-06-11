@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactFireMixin = require('reactfire');
 var ListNomz = require('./ListNomz');
+var ListPlaces = require('./ListPlaces');
 var ReactDOM = require('react-dom');
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -9,6 +10,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+
+import OrderIcon from 'material-ui/svg-icons/action/done';
 
 const {Grid, Row, Col} = require('react-flexbox-grid');
 
@@ -28,12 +31,16 @@ var OrderContainer = React.createClass({
         return {
             noResults: false,
             loading: true,
-            itemsz: [], //tODO
+            nomzez: [],
             nomzRef: today + '/nomz/',
             placesRef: today + '/places/',
             orderModal: {
                 open: false
-            }
+            },
+            placesModal: {
+                open: false
+            },
+            editNom: false
         }
     },
 
@@ -46,7 +53,7 @@ var OrderContainer = React.createClass({
                 });
             } else {
                 this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
-                this.bindAsArray(this.state.firebaseRefNomz, 'itemsz');
+                this.bindAsArray(this.state.firebaseRefNomz, 'nomzez');
                 this.state.user = user;
                 this.state.loggedIn = true;
             }
@@ -68,20 +75,26 @@ var OrderContainer = React.createClass({
 
     },
 
-    handleRemoveItem: function(key, uid, type) {
+    handleRemoveItem: function(key, uid) {
         if (this.state.user.uid === uid) {
-            this.state.firebaseRefNomz.child(key).remove();
+            this._fbRemove('firebaseRefNomz', key);
         }
     },
 
-    handleEditItem: function(index, key, type) {
-        this.refs.edit.value = key;
-        this.refs.nom.value = this.state.items[index].nom;
-        this.refs.nomPrice.value = this.state.items[index].nomPrice;
+    handleEditItem: function(index, key, editType) {
+
+        this.openCloseModal('open', 'orderModal')
+        this.state.editNom = key;
+
+        setTimeout(() => { // https://github.com/callemall/material-ui/issues/3618
+            this.refs.nom.input.value = this.state.nomzez[index].nom;
+            this.refs.nomPrice.input.value = this.state.nomzez[index].nomPrice;
+        },250);
+
     },
 
     handlePlusOne: function(item) {
-        this.firebasePush({
+        this._fbAdd('nomzez',{
             user: {
                 name: this.state.user.displayName,
                 email: this.state.user.email,
@@ -97,10 +110,11 @@ var OrderContainer = React.createClass({
     handleSubmitOrder: function(e){
         e.preventDefault();
 
-        var isEdit = this.refs.edit.input.value.length > 0 ? true : false;
+        var isEdit = this.state.editNom ? true : false;
 
         if (!isEdit){
-            this.firebasePush({
+
+            this._fbAdd('nomzez',{
                 user: {
                     name: this.state.user.displayName,
                     email: this.state.user.email,
@@ -111,25 +125,34 @@ var OrderContainer = React.createClass({
                 nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
             });
+
         } else {
-            var child = this.state.firebaseRefNomz.child(this.refs.edit.value);
-            child.update({
+            this._fbUpdate('firebaseRefNomz', this.state.editNom, {
                 nom: this.refs.nom.input.value,
                 nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
             });
+            this.state.editNom = false;
         }
 
-        this.refs.orderForm.reset();
+        this.openCloseModal('close','orderModal');
 
 
     },
     openCloseModal: function(event, modalType) {
         event === 'open' ? this.setState({[modalType]: {open: true}}) : this.setState({[modalType]: {open: false}});
     },
-    firebasePush: function(obj) {
-        this.firebaseRefs['itemsz'].push(obj);
+    _fbAdd: function(path, obj) {
+        this.firebaseRefs[path].push(obj);
     },
+    _fbUpdate: function(path, key, obj){
+        var child = this.state[path].child(key);
+        child.update(obj);
+    },
+    _fbRemove: function(path, key){
+        this.state[path].child(key).remove();
+    },
+
     render: function() {
         var actions = [
           <FlatButton
@@ -141,14 +164,15 @@ var OrderContainer = React.createClass({
             label="Order"
             primary={true}
             keyboardFocused={true}
-            onTouchTap={this.openCloseModal.bind(null,'close', 'orderModal')}
+            onTouchTap={this.handleSubmitOrder}
+            icon={<OrderIcon />}
           />,
         ];
         return (
             <Grid>
 
                 <ListNomz
-                    items={this.state.itemsz}
+                    items={this.state.nomzez}
                     onRemoveItem={ this.handleRemoveItem }
                     onEditItem={ this.handleEditItem }
                     onPlusOne={ this.handlePlusOne }
@@ -164,13 +188,8 @@ var OrderContainer = React.createClass({
                 onRequestClose={this.openCloseModal.bind(null,'close', 'orderModal')}
                 >
 
-                    <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
+                    <form onSubmit={this.handleSubmitOrder}>
                         <Row>
-                            <TextField
-                                type="hidden"
-                                ref="edit"
-                                value=""
-                            />
                             <Col xs={12}>
                                 <TextField
                                     floatingLabelText="What do you want to order?"
@@ -191,22 +210,12 @@ var OrderContainer = React.createClass({
                                     fullWidth={true}
                                 />
                             </Col>
-                            <Col xs={12}>
-                                <div className="input-field">
-                                    <button
-                                        className="btn blue lighten-1 waves-effect waves-light btn-large"
-                                        type="submit"
-                                        ref="submit"
-                                    >
-                                        <i className="material-icons right">send</i> Order!
-                                    </button>
-                                </div>
-                            </Col>
+                            <FlatButton type="submit" style={{display: 'none'}}>Submit</FlatButton>
                         </Row>
                     </form>
                 </Dialog>
 
-                <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')}>
+                <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                     <ContentAdd />
                 </FloatingActionButton>
 

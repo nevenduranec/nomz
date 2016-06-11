@@ -47,9 +47,9 @@ function ListNomz (props) {
                     rightIconButton={
                         <IconMenu iconButtonElement={iconButtonElement}>
                             <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
-                            { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'])} leftIcon={<EditIcon />}>Edit</MenuItem>}
-                            { edit && <Divider />}
-                            { edit && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
+                            <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'])} leftIcon={<EditIcon />}>Edit</MenuItem>
+                            <Divider />
+                            <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>
                         </IconMenu>
                     }
                     primaryText={<h1>{ item.nom }</h1>}
