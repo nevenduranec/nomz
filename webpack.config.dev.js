@@ -11,6 +11,15 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
             path: __dirname + '/dist',
             filename: "index_bundle.[hash].js"
         },
+        devServer: {
+            contentBase: '.', // Relative directory for base of server
+            devtool: 'eval',
+            hot: true, // Live-reload
+            inline: true,
+            port: 8080, // Port Number
+            host: 'localhost', // Change to '0.0.0.0' for external facing server
+        },
+        devtool: 'eval',
         module: {
             loaders: [
                 {
@@ -64,6 +73,8 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
             autoprefixer({ browsers: ['last 3 versions'] })
         ],
         plugins: [
+            new webpack.HotModuleReplacementPlugin(),
+            new webpack.NoErrorsPlugin(),
             new CleanWebpackPlugin([__dirname + '/dist/'], {
                 root: __dirname,
                 verbose: false,

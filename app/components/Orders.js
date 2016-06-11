@@ -5,8 +5,10 @@ var ReactDOM = require('react-dom');
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
 
 const {Grid, Row, Col} = require('react-flexbox-grid');
 
@@ -95,7 +97,7 @@ var OrderContainer = React.createClass({
     handleSubmitOrder: function(e){
         e.preventDefault();
 
-        var isEdit = this.refs.edit.value.length > 0 ? true : false;
+        var isEdit = this.refs.edit.input.value.length > 0 ? true : false;
 
         if (!isEdit){
             this.firebasePush({
@@ -105,15 +107,15 @@ var OrderContainer = React.createClass({
                     uid: this.state.user.uid,
                     photoURL: this.state.user.photoURL
                 },
-                nom: this.refs.nom.value,
-                nomPrice: this.refs.nomPrice.value,
+                nom: this.refs.nom.input.value,
+                nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
             });
         } else {
             var child = this.state.firebaseRefNomz.child(this.refs.edit.value);
             child.update({
-                nom: this.refs.nom.value,
-                nomPrice: this.refs.nomPrice.value,
+                nom: this.refs.nom.input.value,
+                nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
             });
         }
@@ -135,7 +137,7 @@ var OrderContainer = React.createClass({
             primary={true}
             onTouchTap={this.openCloseModal.bind(null,'close', 'orderModal')}
           />,
-          <FlatButton
+          <RaisedButton
             label="Order"
             primary={true}
             keyboardFocused={true}
@@ -143,9 +145,7 @@ var OrderContainer = React.createClass({
           />,
         ];
         return (
-
             <Grid>
-
 
                 <ListNomz
                     items={this.state.itemsz}
@@ -157,45 +157,52 @@ var OrderContainer = React.createClass({
                     noResults={this.state.noResults}
                 />
 
-
-
                 <Dialog
                 title="Your order"
                 open={this.state.orderModal.open}
                 actions={actions}
                 onRequestClose={this.openCloseModal.bind(null,'close', 'orderModal')}
                 >
+
                     <form ref="orderForm" onSubmit={this.handleSubmitOrder} className="row">
-                        <input type="hidden" ref="edit" value="" />
-                        <div className="input-field col s12 m5 l7">
-                            <input
-                                ref="nom"
-                                type="text"
-                                id="nom"
-                                className="validate"
-                                required
+                        <Row>
+                            <TextField
+                                type="hidden"
+                                ref="edit"
+                                value=""
                             />
-                            <label htmlFor="nom">What do you want to order?</label>
-                        </div>
-                        <div className="input-field col s12 m4 l3">
-                            <input
-                                ref="nomPrice"
-                                type="number"
-                                id="nomPrice"
-                                className="validate"
-                                required
-                            />
-                            <label htmlFor="nomPrice">How much does it cost?</label>
-                        </div>
-                        <div className="input-field col s12 m3 l2">
-                            <button
-                                className="btn blue lighten-1 waves-effect waves-light btn-large"
-                                type="submit"
-                                ref="submit"
-                            >
-                                <i className="material-icons right">send</i> Order!
-                            </button>
-                        </div>
+                            <Col xs={12}>
+                                <TextField
+                                    floatingLabelText="What do you want to order?"
+                                    type="text"
+                                    id="nom"
+                                    required
+                                    ref="nom"
+                                    fullWidth={true}
+                                />
+                            </Col>
+                            <Col xs={12}>
+                                <TextField
+                                    floatingLabelText="How much does it cost?"
+                                    type="number"
+                                    id="nomPrice"
+                                    required
+                                    ref="nomPrice"
+                                    fullWidth={true}
+                                />
+                            </Col>
+                            <Col xs={12}>
+                                <div className="input-field">
+                                    <button
+                                        className="btn blue lighten-1 waves-effect waves-light btn-large"
+                                        type="submit"
+                                        ref="submit"
+                                    >
+                                        <i className="material-icons right">send</i> Order!
+                                    </button>
+                                </div>
+                            </Col>
+                        </Row>
                     </form>
                 </Dialog>
 
