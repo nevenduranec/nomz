@@ -19,8 +19,7 @@ var routes = (
     <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={hashHistory}>
             <Route path='/' component={Main}>
-                <IndexRoute component={Auth} />
-                <Route path='orders' component={Orders} />
+                <IndexRoute component={Orders} />
             </Route>
         </Router>
     </MuiThemeProvider>

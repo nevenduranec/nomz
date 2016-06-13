@@ -35,7 +35,7 @@ function ListNomz (props) {
     var createItem = function(item, index) {
         var edit = false;
 
-        if (props.user.uid === item.user.uid){
+        if (props.user && props.user.uid === item.user.uid){
             edit = true;
         }
         return (
@@ -49,7 +49,7 @@ function ListNomz (props) {
                             <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
                             { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'])} leftIcon={<EditIcon />}>Edit</MenuItem>}
                             { edit && <Divider />}
-                            { edit && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
+                            { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
                         </IconMenu>
                     }
                     primaryText={<h1>{ item.nom }</h1>}

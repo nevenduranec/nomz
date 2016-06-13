@@ -29,6 +29,7 @@ var OrderContainer = React.createClass({
             today = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
 
         return {
+            user: {},
             noResults: false,
             loading: true,
             nomzez: [],
@@ -47,16 +48,22 @@ var OrderContainer = React.createClass({
     componentWillMount: function() {
 
         firebase.auth().onAuthStateChanged(function(user) {
-            if (!user) {
-                this.context.router.push({
-                    pathname: '/'
+            this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
+            this.bindAsArray(this.state.firebaseRefNomz, 'nomzez');
+            console.log(user);
+
+            if (user){
+                this.setState({
+                    user: user
                 });
             } else {
-                this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
-                this.bindAsArray(this.state.firebaseRefNomz, 'nomzez');
-                this.state.user = user;
-                this.state.loggedIn = true;
+                this.setState({
+                    user: {}
+                });
             }
+
+            console.log(user);
+
         }.bind(this));
 
         firebase.database().ref(this.state.nomzRef).on('value', function(snapshot) {
@@ -72,6 +79,8 @@ var OrderContainer = React.createClass({
                 });
             }
         }.bind(this));
+
+        console.log(Object.keys(this.state.user).length);
 
     },
 
@@ -152,7 +161,37 @@ var OrderContainer = React.createClass({
     _fbRemove: function(path, key){
         this.state[path].child(key).remove();
     },
+    signInWithGoogle: function () {
+        var provider = new firebase.auth.GoogleAuthProvider();
 
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+
+            this.setState({
+                user: result.user,
+                token: result.credential.accessToken
+            });
+
+        }.bind(this)).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
+        });
+
+    },
+    signOut: function() {
+        firebase.auth().signOut().then(function() {
+            this.setState({
+                user: {}
+            });
+        }.bind(this)).catch(function(error) {
+          // An error happened.
+        }.bind(this));
+    },
     render: function() {
         var actions = [
           <FlatButton
@@ -218,6 +257,12 @@ var OrderContainer = React.createClass({
                 <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                     <ContentAdd />
                 </FloatingActionButton>
+
+                { !Object.keys(this.state.user).length && <FloatingActionButton onTouchTap={this.signInWithGoogle} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
+                    <ContentAdd />sdfsdf
+                </FloatingActionButton>}
+
+                <FlatButton label="sign out" onTouchTap={this.signOut} />
 
             </Grid>
 
