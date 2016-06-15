@@ -5,7 +5,6 @@ var Route = ReactRouter.Route;
 var hashHistory = ReactRouter.hashHistory;
 var IndexRoute = ReactRouter.IndexRoute;
 var Main = require('../components/Main');
-var Auth = require('../components/Auth');
 var Orders = require('../components/Orders');
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';

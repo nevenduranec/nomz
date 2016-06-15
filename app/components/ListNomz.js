@@ -44,14 +44,19 @@ function ListNomz (props) {
                 <ListItem
                     disabled={true}
                     leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
+
                     rightIconButton={
+                        props.loggedIn ?
                         <IconMenu iconButtonElement={iconButtonElement}>
                             <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
                             { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'])} leftIcon={<EditIcon />}>Edit</MenuItem>}
                             { edit && <Divider />}
                             { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
                         </IconMenu>
+                        :
+                        <div></div>
                     }
+
                     primaryText={<h1>{ item.nom }</h1>}
                     secondaryText={
                         <p>

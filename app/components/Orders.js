@@ -33,6 +33,7 @@ var OrderContainer = React.createClass({
             noResults: false,
             loading: true,
             nomzez: [],
+            places: [],
             nomzRef: today + '/nomz/',
             placesRef: today + '/places/',
             orderModal: {
@@ -50,7 +51,6 @@ var OrderContainer = React.createClass({
         firebase.auth().onAuthStateChanged(function(user) {
             this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
             this.bindAsArray(this.state.firebaseRefNomz, 'nomzez');
-            console.log(user);
 
             if (user){
                 this.setState({
@@ -62,7 +62,6 @@ var OrderContainer = React.createClass({
                 });
             }
 
-            console.log(user);
 
         }.bind(this));
 
@@ -79,8 +78,6 @@ var OrderContainer = React.createClass({
                 });
             }
         }.bind(this));
-
-        console.log(Object.keys(this.state.user).length);
 
     },
 
@@ -168,7 +165,8 @@ var OrderContainer = React.createClass({
 
             this.setState({
                 user: result.user,
-                token: result.credential.accessToken
+                token: result.credential.accessToken,
+                loggedIn: true
             });
 
         }.bind(this)).catch(function(error) {
@@ -183,16 +181,8 @@ var OrderContainer = React.createClass({
         });
 
     },
-    signOut: function() {
-        firebase.auth().signOut().then(function() {
-            this.setState({
-                user: {}
-            });
-        }.bind(this)).catch(function(error) {
-          // An error happened.
-        }.bind(this));
-    },
     render: function() {
+
         var actions = [
           <FlatButton
             label="Cancel"
@@ -216,6 +206,7 @@ var OrderContainer = React.createClass({
                     onEditItem={ this.handleEditItem }
                     onPlusOne={ this.handlePlusOne }
                     user={this.state.user}
+                    loggedIn={this.props.loggedIn}
                     isLoading={this.state.loading}
                     noResults={this.state.noResults}
                 />
@@ -254,15 +245,48 @@ var OrderContainer = React.createClass({
                     </form>
                 </Dialog>
 
+
+                <Dialog
+                title="Add place to order from"
+                open={this.props.addPlace}
+                actions={actions}
+                onRequestClose={this.openCloseModal.bind(null,'close', 'placesModal')}
+                >
+
+                    <form onSubmit={this.handleSubmitOrder}>
+                        <Row>
+                            <Col xs={12}>
+                                <TextField
+                                    floatingLabelText="What do you want to order?"
+                                    type="text"
+                                    id="nom"
+                                    required
+                                    ref="nom"
+                                    fullWidth={true}
+                                />
+                            </Col>
+                            <Col xs={12}>
+                                <TextField
+                                    floatingLabelText="How much does it cost?"
+                                    type="number"
+                                    id="nomPrice"
+                                    required
+                                    ref="nomPrice"
+                                    fullWidth={true}
+                                />
+                            </Col>
+                            <FlatButton type="submit" style={{display: 'none'}}>Submit</FlatButton>
+                        </Row>
+                    </form>
+                </Dialog>
+
                 <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
                     <ContentAdd />
                 </FloatingActionButton>
 
-                { !Object.keys(this.state.user).length && <FloatingActionButton onTouchTap={this.signInWithGoogle} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
-                    <ContentAdd />sdfsdf
+                { !this.props.loggedIn && <FloatingActionButton onTouchTap={this.signInWithGoogle} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
+                    <ContentAdd />
                 </FloatingActionButton>}
-
-                <FlatButton label="sign out" onTouchTap={this.signOut} />
 
             </Grid>
 
