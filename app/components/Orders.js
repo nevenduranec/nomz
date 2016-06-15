@@ -210,7 +210,7 @@ var OrderContainer = React.createClass({
             onTouchTap={this.openCloseModal.bind(null,'close', 'placesModal')}
           />,
           <RaisedButton
-            label="Order"
+            label="Add"
             primary={true}
             keyboardFocused={true}
             onTouchTap={this.handleSubmitOrder}

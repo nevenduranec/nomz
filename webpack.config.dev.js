@@ -64,6 +64,10 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
                     loader: "file-loader?name=/assets/images/[name].[ext]"
                 },
                 {
+                    test: /\.json$/,
+                    loader: "json-loader"
+                },
+                {
                     test: /\.scss$/,
                     loaders: ['style', 'css', 'sass', 'postcss']
                 }
@@ -90,5 +94,9 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
                     // NODE_ENV: JSON.stringify("production")
                 }
             })
-        ]
+        ],
+        node: {
+            fs: "empty",
+            child_process: 'empty'
+        }
     };
