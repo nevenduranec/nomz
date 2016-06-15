@@ -45,7 +45,6 @@ var OrderContainer = React.createClass({
             editNom: false
         }
     },
-
     componentWillMount: function() {
 
         firebase.auth().onAuthStateChanged(function(user) {
@@ -181,6 +180,13 @@ var OrderContainer = React.createClass({
         });
 
     },
+    componentWillReceiveProps: function(nextProps){
+        this.setState({
+            placesModal: {
+                open: nextProps.openPlacesModal
+            },
+        });
+    },
     render: function() {
 
         var actions = [
@@ -188,6 +194,20 @@ var OrderContainer = React.createClass({
             label="Cancel"
             primary={true}
             onTouchTap={this.openCloseModal.bind(null,'close', 'orderModal')}
+          />,
+          <RaisedButton
+            label="Order"
+            primary={true}
+            keyboardFocused={true}
+            onTouchTap={this.handleSubmitOrder}
+            icon={<OrderIcon />}
+          />,
+        ];
+        var actionsPlaces = [
+          <FlatButton
+            label="Cancel"
+            primary={true}
+            onTouchTap={this.openCloseModal.bind(null,'close', 'placesModal')}
           />,
           <RaisedButton
             label="Order"
@@ -248,8 +268,8 @@ var OrderContainer = React.createClass({
 
                 <Dialog
                 title="Add place to order from"
-                open={this.props.addPlace}
-                actions={actions}
+                open={this.state.placesModal.open}
+                actions={actionsPlaces}
                 onRequestClose={this.openCloseModal.bind(null,'close', 'placesModal')}
                 >
 

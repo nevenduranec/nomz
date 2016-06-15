@@ -24,7 +24,7 @@ var Main = React.createClass({
     getInitialState: function(){
         return {
             loggedIn: false,
-            addPlace: false
+            openPlacesModal: false
         }
     },
     componentWillMount: function () {
@@ -50,11 +50,9 @@ var Main = React.createClass({
       });
     },
     addPlace: function() {
-
         this.setState({
-            addPlace: true
+            openPlacesModal: true
         });
-
     },
     render: function () {
         return (
@@ -79,7 +77,7 @@ var Main = React.createClass({
                     }
                 />
                 <Grid>
-                    {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, addPlace: this.state.addPlace })}
+                    {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, openPlacesModal: this.state.openPlacesModal })}
                 </Grid>
             </div>
         )
