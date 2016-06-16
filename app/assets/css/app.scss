@@ -1,5 +1,6 @@
 html {
-    font-family: 'Roboto';
+    background-image: url(../../assets/images/pattern.png);
+    background-size: 110px;
 }
 
 body {
@@ -22,4 +23,18 @@ body {
 
 iframe {
     border: 0;
+}
+
+
+h1 {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 30px;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+.Main {
+    padding-bottom: 50px;
 }

@@ -66,7 +66,7 @@ function ListNomz (props) {
                         <div></div>
                     }
 
-                    primaryText={<h1 className="Nomz-title">{ item.nom }</h1>}
+                    primaryText={<h2 className="Nomz-title">{ item.nom }</h2>}
                     secondaryText={
                     <div className="Nomz-info">
                         <span className="Nomz-place">

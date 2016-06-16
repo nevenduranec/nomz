@@ -11,7 +11,13 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const muiTheme = getMuiTheme({
-    //fontFamily: 'Roboto'
+    fontFamily: 'Jaldi',
+    spacing: {
+        desktopKeylineIncrement: 84
+    },
+    palette: {
+      primary1Color: "#9F005A",
+    },
 });
 
 var routes = (

@@ -57,7 +57,7 @@ var Main = React.createClass({
     },
     render: function () {
         return (
-            <div>
+            <div className="Main">
                 <AppBar
                     title={<span className="Logos"><img src={require('../assets/images/logo_burza.png')} /><img src={require('../assets/images/logo.png')} /></span>}
                     showMenuIconButton={false}
