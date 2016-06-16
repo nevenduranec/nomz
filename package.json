@@ -15,8 +15,7 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.4.1",
-    "reactfire": "^1.0.0",
-    "webshot": "github:brenden/node-webshot#pull/150/head"
+    "reactfire": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",
@@ -41,7 +40,6 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "webshot": "github:brenden/node-webshot#pull/150/head"
+    "webpack-dev-server": "^1.14.1"
   }
 }

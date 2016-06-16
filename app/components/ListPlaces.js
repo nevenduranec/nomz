@@ -5,10 +5,11 @@ const {Grid, Row, Col} = require('react-flexbox-grid');
 
 import CircularProgress from 'material-ui/CircularProgress';
 
-import {List, ListItem} from 'material-ui/List';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
+
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -16,7 +17,6 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
-import PlusOneIcon from 'material-ui/svg-icons/social/plus-one';
 
 
 const iconButtonElement = (
@@ -29,8 +29,7 @@ const iconButtonElement = (
     </IconButton>
 );
 
-
-function ListNomz (props) {
+function ListPlaces (props) {
 
     var createItem = function(item, index) {
         var edit = false;
@@ -40,39 +39,25 @@ function ListNomz (props) {
         }
         return (
             <Col xs={12} key={ index }>
-            <List>
-                <ListItem
-                    disabled={true}
-                    leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
-                    rightIconButton={
-                        <IconMenu iconButtonElement={iconButtonElement}>
-                            <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
-                            <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'])} leftIcon={<EditIcon />}>Edit</MenuItem>
-                            <Divider />
-                            <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>
-                        </IconMenu>
-                    }
-                    primaryText={<h1>{ item.nom }</h1>}
-                    secondaryText={
-                        <p>
-                            <span style={{color: darkBlack}}>{ item.nomPrice }</span><br />
-                            <Timestamp date={ item.time } />
-                        </p>
-                    }
-                    secondaryTextLines={2}
+            <Card>
+                <CardHeader
+                    title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
+                    avatar={ item.user.photoURL }
                 />
-                <Divider inset={true} />
-            </List>
+                <CardMedia>
+                    <iframe src={item.placeURL} width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
+                </CardMedia>
+                <CardTitle title={ item.placeName } subtitle={ <Timestamp date={ item.time } /> } />
+                <CardActions>
+                    <IconMenu iconButtonElement={iconButtonElement}>
+                        <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'place')} leftIcon={<EditIcon />}>Edit</MenuItem>
+                        <Divider />
+                        <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'place')} leftIcon={<DeleteIcon />}>Delete</MenuItem>
+                    </IconMenu>
+                </CardActions>
+            </Card>
             </Col>
         );
-        // return (
-        //         <div className="secondary-content"><a href="#!" className="dropdown-button btn-floating deep-orange accent-2 waves-effect waves-light" data-activates={ 'edit-dropdown-' + index }><i className="material-icons left">edit</i></a></div>
-
-        //             <li className="green lighten-2"><span className="white-text" onClick={ props.onPlusOne.bind(null, index, item['.key']) }><i className="material-icons left">playlist_add</i>+1</span></li>
-        //             { edit && <li className="orange lighten-2"><span className="white-text" onClick={ props.onEditItem.bind(null, index, item['.key']) }><i className="material-icons left">edit</i>Edit</span></li> }
-        //             { edit && <li className="red"><span className="white-text" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><i className="material-icons left">delete</i>Delete</span></li> }
-
-        // );
     };
 
 
@@ -91,14 +76,13 @@ function ListNomz (props) {
 
 }
 
-ListNomz.propTypes = {
+ListPlaces.propTypes = {
     noResults: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     items: PropTypes.array.isRequired,
     onRemoveItem: PropTypes.func.isRequired,
     onEditItem: PropTypes.func.isRequired,
-    onPlusOne: PropTypes.func.isRequired,
     user: PropTypes.object
 }
 
-module.exports = ListNomz;
+module.exports = ListPlaces;

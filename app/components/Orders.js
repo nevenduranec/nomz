@@ -10,6 +10,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 import OrderIcon from 'material-ui/svg-icons/action/done';
 
@@ -32,6 +34,8 @@ var OrderContainer = React.createClass({
             user: {},
             noResults: false,
             loading: true,
+            noResultsPlaces: false,
+            loadingPlaces: true,
             nomzez: [],
             places: [],
             nomzRef: today + '/nomz/',
@@ -42,7 +46,9 @@ var OrderContainer = React.createClass({
             placesModal: {
                 open: false
             },
-            editNom: false
+            editNom: false,
+            editPlace: false,
+            selectedPlace: "Select a place"
         }
     },
     componentWillMount: function() {
@@ -50,6 +56,9 @@ var OrderContainer = React.createClass({
         firebase.auth().onAuthStateChanged(function(user) {
             this.state.firebaseRefNomz = firebase.database().ref(this.state.nomzRef);
             this.bindAsArray(this.state.firebaseRefNomz, 'nomzez');
+
+            this.state.firebaseRefPlaces = firebase.database().ref(this.state.placesRef);
+            this.bindAsArray(this.state.firebaseRefPlaces, 'places');
 
             if (user){
                 this.setState({
@@ -78,23 +87,47 @@ var OrderContainer = React.createClass({
             }
         }.bind(this));
 
+        firebase.database().ref(this.state.placesRef).on('value', function(snapshot) {
+            if (!snapshot.val()) {
+                this.setState({
+                    loadingPlaces: false,
+                    noResultsPlaces: true
+                });
+            } else {
+                this.setState({
+                    noResultsPlaces: false,
+                    loadingPlaces: false
+                });
+            }
+        }.bind(this));
+
     },
 
-    handleRemoveItem: function(key, uid) {
+    handleRemoveItem: function(key, uid, type) {
         if (this.state.user.uid === uid) {
-            this._fbRemove('firebaseRefNomz', key);
+            this._fbRemove(type === 'nom' ? 'firebaseRefNomz' : 'firebaseRefPlaces', key);
         }
     },
 
-    handleEditItem: function(index, key, editType) {
+    handleEditItem: function(index, key, type) {
 
-        this.openCloseModal('open', 'orderModal')
-        this.state.editNom = key;
+        if (type === 'nom'){
+            this.openCloseModal('open', 'orderModal')
+            this.state.editNom = key;
 
-        setTimeout(() => { // https://github.com/callemall/material-ui/issues/3618
-            this.refs.nom.input.value = this.state.nomzez[index].nom;
-            this.refs.nomPrice.input.value = this.state.nomzez[index].nomPrice;
-        },250);
+            setTimeout(() => { // https://github.com/callemall/material-ui/issues/3618
+                this.refs.nom.input.value = this.state.nomzez[index].nom;
+                this.refs.nomPrice.input.value = this.state.nomzez[index].nomPrice;
+            },250);
+        } else {
+            this.openCloseModal('open', 'placesModal')
+            this.state.editPlace = key;
+
+            setTimeout(() => { // https://github.com/callemall/material-ui/issues/3618
+                this.refs.placeName.input.value = this.state.places[index].placeName;
+                this.refs.placeURL.input.value = this.state.places[index].placeURL;
+            },250);
+        }
 
     },
 
@@ -126,6 +159,7 @@ var OrderContainer = React.createClass({
                     uid: this.state.user.uid,
                     photoURL: this.state.user.photoURL
                 },
+                place: this.state.selectedPlace,
                 nom: this.refs.nom.input.value,
                 nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
@@ -133,6 +167,7 @@ var OrderContainer = React.createClass({
 
         } else {
             this._fbUpdate('firebaseRefNomz', this.state.editNom, {
+                place: this.state.selectedPlace,
                 nom: this.refs.nom.input.value,
                 nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
@@ -144,6 +179,37 @@ var OrderContainer = React.createClass({
 
 
     },
+
+    handleSubmitPlace: function(e){
+        e.preventDefault();
+
+        var isEdit = this.state.editPlace ? true : false;
+
+        if (!isEdit){
+            this._fbAdd('places',{
+                user: {
+                    name: this.state.user.displayName,
+                    email: this.state.user.email,
+                    uid: this.state.user.uid,
+                    photoURL: this.state.user.photoURL
+                },
+                placeName: this.refs.placeName.input.value,
+                placeURL: this.refs.placeURL.input.value,
+                time: Date.now()
+            });
+        } else {
+            this._fbUpdate('firebaseRefPlaces', this.state.editPlace, {
+                placeName: this.refs.placeName.input.value,
+                placeURL: this.refs.placeURL.input.value,
+                time: Date.now()
+            });
+            this.state.editPlace = false;
+        }
+
+        this.openCloseModal('close','placesModal');
+
+    },
+
     openCloseModal: function(event, modalType) {
         event === 'open' ? this.setState({[modalType]: {open: true}}) : this.setState({[modalType]: {open: false}});
     },
@@ -187,6 +253,11 @@ var OrderContainer = React.createClass({
             },
         });
     },
+    handlePlaceChange: function(event, index, value){
+        this.setState({
+            selectedPlace: value
+        });
+    },
     render: function() {
 
         var actions = [
@@ -213,12 +284,22 @@ var OrderContainer = React.createClass({
             label="Add"
             primary={true}
             keyboardFocused={true}
-            onTouchTap={this.handleSubmitOrder}
+            onTouchTap={this.handleSubmitPlace}
             icon={<OrderIcon />}
           />,
         ];
         return (
             <Grid>
+
+                <ListPlaces
+                    items={this.state.places}
+                    onRemoveItem={ this.handleRemoveItem }
+                    onEditItem={ this.handleEditItem }
+                    user={this.state.user}
+                    loggedIn={this.props.loggedIn}
+                    isLoading={this.state.loadingPlaces}
+                    noResults={this.state.noResultsPlaces}
+                />
 
                 <ListNomz
                     items={this.state.nomzez}
@@ -240,6 +321,19 @@ var OrderContainer = React.createClass({
 
                     <form onSubmit={this.handleSubmitOrder}>
                         <Row>
+                            { this.state.places.length > 0 &&
+                                <Col xs={12}>
+                                    <SelectField value={this.state.selectedPlace} ref="place" fullWidth={true} onChange={this.handlePlaceChange}>
+                                        <MenuItem key="0" value="Select a place" primaryText="Select a place" />
+                                        {
+                                            this.state.places.map( (item, index) => (
+                                                <MenuItem key={index+1} value={item.placeName} primaryText={item.placeName} />
+                                                )
+                                            )
+                                        }
+                                    </SelectField>
+                                </Col>
+                            }
                             <Col xs={12}>
                                 <TextField
                                     floatingLabelText="What do you want to order?"
@@ -273,25 +367,25 @@ var OrderContainer = React.createClass({
                 onRequestClose={this.openCloseModal.bind(null,'close', 'placesModal')}
                 >
 
-                    <form onSubmit={this.handleSubmitOrder}>
+                    <form onSubmit={this.handleSubmitPlace}>
                         <Row>
                             <Col xs={12}>
                                 <TextField
-                                    floatingLabelText="What do you want to order?"
+                                    floatingLabelText="Place name"
                                     type="text"
-                                    id="nom"
+                                    id="placeName"
                                     required
-                                    ref="nom"
+                                    ref="placeName"
                                     fullWidth={true}
                                 />
                             </Col>
                             <Col xs={12}>
                                 <TextField
-                                    floatingLabelText="How much does it cost?"
-                                    type="number"
-                                    id="nomPrice"
+                                    floatingLabelText="Place URL"
+                                    type="url"
+                                    id="placeURL"
                                     required
-                                    ref="nomPrice"
+                                    ref="placeURL"
                                     fullWidth={true}
                                 />
                             </Col>

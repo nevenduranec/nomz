@@ -5,6 +5,7 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Divider from 'material-ui/Divider';
 
 var firebaseConfig = {
     apiKey: "AIzaSyDPJ293TkV64b5qJoJU5VdNrOPJkEf9Ths",
@@ -70,6 +71,7 @@ var Main = React.createClass({
                           anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                         >
                           <MenuItem primaryText="Add place" onTouchTap={this.addPlace} />
+                          <Divider />
                           <MenuItem primaryText="Sign out" onTouchTap={this.signOut} />
                         </IconMenu>
                         :

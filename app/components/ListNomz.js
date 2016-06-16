@@ -49,9 +49,9 @@ function ListNomz (props) {
                         props.loggedIn ?
                         <IconMenu iconButtonElement={iconButtonElement}>
                             <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
-                            { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'])} leftIcon={<EditIcon />}>Edit</MenuItem>}
+                            { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>}
                             { edit && <Divider />}
-                            { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid)} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
+                            { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
                         </IconMenu>
                         :
                         <div></div>
@@ -70,14 +70,6 @@ function ListNomz (props) {
             </List>
             </Col>
         );
-        // return (
-        //         <div className="secondary-content"><a href="#!" className="dropdown-button btn-floating deep-orange accent-2 waves-effect waves-light" data-activates={ 'edit-dropdown-' + index }><i className="material-icons left">edit</i></a></div>
-
-        //             <li className="green lighten-2"><span className="white-text" onClick={ props.onPlusOne.bind(null, index, item['.key']) }><i className="material-icons left">playlist_add</i>+1</span></li>
-        //             { edit && <li className="orange lighten-2"><span className="white-text" onClick={ props.onEditItem.bind(null, index, item['.key']) }><i className="material-icons left">edit</i>Edit</span></li> }
-        //             { edit && <li className="red"><span className="white-text" onClick={ props.onRemoveItem.bind(null, item['.key'], item.user.uid) }><i className="material-icons left">delete</i>Delete</span></li> }
-
-        // );
     };
 
 
