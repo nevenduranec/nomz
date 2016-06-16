@@ -291,6 +291,7 @@ var OrderContainer = React.createClass({
         return (
             <Grid>
 
+                
                 <ListPlaces
                     items={this.state.places}
                     onRemoveItem={ this.handleRemoveItem }

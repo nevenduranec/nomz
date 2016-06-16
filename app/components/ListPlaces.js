@@ -43,13 +43,14 @@ function ListPlaces (props) {
                 <CardHeader
                     title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
                     avatar={ item.user.photoURL }
+                    subtitle={ <Timestamp date={ item.time } /> }
                 />
                 <CardMedia>
-                    <iframe src={item.placeURL} width="100%" height="500px" frameborder="0" allowfullscreen></iframe>
+                    <iframe src={item.placeURL} width="100%" height="500px" frameborder="0"></iframe>
                 </CardMedia>
-                <CardTitle title={ item.placeName } subtitle={ <Timestamp date={ item.time } /> } />
-                <CardActions>
-                    <IconMenu iconButtonElement={iconButtonElement}>
+                <CardTitle title={<a href={item.placeURL}>{item.placeName}</a>} />
+                <CardActions style={{padding: 0}}>
+                    <IconMenu iconButtonElement={iconButtonElement} style={{position: 'absolute', bottom: '7px', right: 0}}>
                         <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'place')} leftIcon={<EditIcon />}>Edit</MenuItem>
                         <Divider />
                         <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'place')} leftIcon={<DeleteIcon />}>Delete</MenuItem>
@@ -67,7 +68,7 @@ function ListPlaces (props) {
         if (props.noResults){
             return <Row>No results for today</Row>
         } else {
-             return <Row><h1>Todays orders</h1>{ props.items.map(createItem) }</Row>
+             return <span><Row><Col xs={12}><h1>Todays orders</h1></Col></Row><Row>{ props.items.map(createItem) }</Row></span>
         }
     }
 
