@@ -14,10 +14,14 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import TimeIcon from 'material-ui/svg-icons/Image/timelapse';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import PlusOneIcon from 'material-ui/svg-icons/social/plus-one';
+import PriceIcon from 'material-ui/svg-icons/editor/monetization-on';
+import PlaceIcon from 'material-ui/svg-icons/maps/place';
 
+import Paper from 'material-ui/Paper';
 
 const iconButtonElement = (
     <IconButton
@@ -38,9 +42,14 @@ function ListNomz (props) {
         if (props.user && props.user.uid === item.user.uid){
             edit = true;
         }
+
+        if (item.place !== 'Select a place'){
+            edit = true;
+        }
         return (
             <Col xs={12} key={ index }>
             <List>
+                { index > 0 && <Divider /> }
                 <ListItem
                     disabled={true}
                     leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
@@ -57,16 +66,17 @@ function ListNomz (props) {
                         <div></div>
                     }
 
-                    primaryText={<h1>{ item.nom }</h1>}
+                    primaryText={<h1 className="Nomz-title">{ item.nom }</h1>}
                     secondaryText={
-                        <p>
-                            <span style={{color: darkBlack}}>{ item.nomPrice }</span><br />
-                            <Timestamp date={ item.time } />
-                        </p>
+                    <div className="Nomz-info">
+                        <span className="Nomz-place">
+                        { item.place !== 'Select a place' ? <PlaceIcon /> : '' }{ item.place !== 'Select a place' ? item.place : '' }</span>
+                        <span className="Nomz-price"><PriceIcon /> { item.nomPrice }kn</span>
+                        <span className="Nomz-time"><TimeIcon /> <Timestamp date={ item.time } /></span>
+                    </div>
                     }
                     secondaryTextLines={2}
                 />
-                <Divider inset={true} />
             </List>
             </Col>
         );
@@ -74,12 +84,12 @@ function ListNomz (props) {
 
 
     if (props.isLoading === true) {
-        return <CircularProgress size={2} />
+        return <Row center="xs"><CircularProgress size={2} /></Row>
     } else {
         if (props.noResults){
-            return <Row>No results for today</Row>
+            return <Row center="xs"><h1>No orders yet :/</h1></Row>
         } else {
-             return <Row><h1>Todays orders</h1>{ props.items.map(createItem) }</Row>
+            return <span><Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row><Paper zDepth={1} rounded={false}><Row>{ props.items.map(createItem) }</Row></Paper></span>
         }
     }
 

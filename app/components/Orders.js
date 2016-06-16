@@ -116,8 +116,11 @@ var OrderContainer = React.createClass({
             this.state.editNom = key;
 
             setTimeout(() => { // https://github.com/callemall/material-ui/issues/3618
-                this.refs.nom.input.value = this.state.nomzez[index].nom;
+                this.refs.nom.input.refs.input.value = this.state.nomzez[index].nom;
                 this.refs.nomPrice.input.value = this.state.nomzez[index].nomPrice;
+                this.setState({
+                    selectedPlace: this.state.nomzez[index].place
+                });
             },250);
         } else {
             this.openCloseModal('open', 'placesModal')
@@ -139,6 +142,7 @@ var OrderContainer = React.createClass({
                 uid: this.state.user.uid,
                 photoURL: this.state.user.photoURL
             },
+            place: item.place,
             nom: item.nom,
             nomPrice: item.nomPrice,
             time: Date.now()
@@ -147,6 +151,10 @@ var OrderContainer = React.createClass({
 
     handleSubmitOrder: function(e){
         e.preventDefault();
+
+        if (!this.refs.nom.input.refs.input.value || !this.refs.nomPrice.input.value || this.state.places.length !== 0 && this.state.selectedPlace === 'Select a place'){
+            return false;
+        }
 
         var isEdit = this.state.editNom ? true : false;
 
@@ -160,18 +168,20 @@ var OrderContainer = React.createClass({
                     photoURL: this.state.user.photoURL
                 },
                 place: this.state.selectedPlace,
-                nom: this.refs.nom.input.value,
+                nom: this.refs.nom.input.refs.input.value,
                 nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
             });
 
         } else {
+
             this._fbUpdate('firebaseRefNomz', this.state.editNom, {
                 place: this.state.selectedPlace,
-                nom: this.refs.nom.input.value,
+                nom: this.refs.nom.input.refs.input.value,
                 nomPrice: this.refs.nomPrice.input.value,
                 time: Date.now()
             });
+
             this.state.editNom = false;
         }
 
@@ -211,7 +221,10 @@ var OrderContainer = React.createClass({
     },
 
     openCloseModal: function(event, modalType) {
-        event === 'open' ? this.setState({[modalType]: {open: true}}) : this.setState({[modalType]: {open: false}});
+        event === 'open' ? this.setState({[modalType]: {open: true}}) : this.setState({
+            [modalType]: {open: false},
+            selectedPlace: 'Select a place'
+        });
     },
     _fbAdd: function(path, obj) {
         this.firebaseRefs[path].push(obj);
@@ -291,7 +304,7 @@ var OrderContainer = React.createClass({
         return (
             <Grid>
 
-                
+
                 <ListPlaces
                     items={this.state.places}
                     onRemoveItem={ this.handleRemoveItem }
@@ -320,11 +333,19 @@ var OrderContainer = React.createClass({
                 onRequestClose={this.openCloseModal.bind(null,'close', 'orderModal')}
                 >
 
-                    <form onSubmit={this.handleSubmitOrder}>
+                    <form ref="orderForm" onSubmit={this.handleSubmitOrder}>
                         <Row>
                             { this.state.places.length > 0 &&
                                 <Col xs={12}>
-                                    <SelectField value={this.state.selectedPlace} ref="place" fullWidth={true} onChange={this.handlePlaceChange}>
+                                    <SelectField
+                                        value={this.state.selectedPlace}
+                                        ref="place"
+                                        fullWidth={true}
+                                        name="place"
+                                        id="place"
+                                        onChange={this.handlePlaceChange}
+                                        required
+                                    >
                                         <MenuItem key="0" value="Select a place" primaryText="Select a place" />
                                         {
                                             this.state.places.map( (item, index) => (
@@ -343,6 +364,7 @@ var OrderContainer = React.createClass({
                                     required
                                     ref="nom"
                                     fullWidth={true}
+                                    multiLine={true}
                                 />
                             </Col>
                             <Col xs={12}>

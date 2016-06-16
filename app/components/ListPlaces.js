@@ -63,12 +63,12 @@ function ListPlaces (props) {
 
 
     if (props.isLoading === true) {
-        return <CircularProgress size={2} />
+        return <Row center="xs"><CircularProgress size={2} /></Row>
     } else {
         if (props.noResults){
-            return <Row>No results for today</Row>
+            return <Row center="xs"><h1>No places yet :/</h1></Row>
         } else {
-             return <span><Row><Col xs={12}><h1>Todays orders</h1></Col></Row><Row>{ props.items.map(createItem) }</Row></span>
+             return <span><Row center="xs"><Col xs={12}><h1>Today's menu</h1></Col></Row><Row>{ props.items.map(createItem) }</Row></span>
         }
     }
 
