@@ -89,10 +89,5 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
                 filename: 'index.html',
                 inject: 'body'
             })
-        ],
-        node: {
-            fs: 'empty',
-            child_process: 'empty',
-            net: 'empty'
-        }
+        ]
     };
