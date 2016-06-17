@@ -72,6 +72,45 @@ h2 {
     font-weight: bold;
 }
 
+.fb-stretch {
+    align-items: stretch;
+
+    > div {
+        border-right: #e3e3e3 1px solid;
+        border-bottom: #e3e3e3 1px solid;
+    }
+}
+
 .Main {
     padding-bottom: 50px;
+}
+
+.Nomz-item {
+    padding: 0 !important;
+}
+
+.Nomz-title {
+    margin-top: 10px;
+    line-height: 1.2;
+}
+
+.Nomz-info {
+    overflow: visible !important;
+    height: auto !important;
+    font-size: 20px !important;
+
+    span, svg {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    svg {
+        fill: rgba(0, 0, 0, 0.541176) !important;
+    }
+
+    span:not(:empty) {
+        display: block;
+        margin: 5px 0;
+    }
+
 }

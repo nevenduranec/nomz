@@ -46,15 +46,15 @@ function ListPlaces (props) {
                     subtitle={ <Timestamp date={ item.time } /> }
                 />
                 <CardMedia>
-                    <iframe src={item.placeURL} width="100%" height="500px" frameborder="0"></iframe>
+                    <iframe src={"https://www.google.com/search?q=%" + item.placeURL + '&btnI=Im+Feeling+Lucky'} width="100%" height="500px" frameborder="0"></iframe>
                 </CardMedia>
                 <CardTitle title={<a href={item.placeURL}>{item.placeName}</a>} />
                 <CardActions style={{padding: 0}}>
-                    <IconMenu iconButtonElement={iconButtonElement} style={{position: 'absolute', bottom: '7px', right: 0}}>
+                    { edit && <IconMenu iconButtonElement={iconButtonElement} style={{position: 'absolute', bottom: '7px', right: 0}}>
                         <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'place')} leftIcon={<EditIcon />}>Edit</MenuItem>
                         <Divider />
                         <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'place')} leftIcon={<DeleteIcon />}>Delete</MenuItem>
-                    </IconMenu>
+                    </IconMenu>}
                 </CardActions>
             </Card>
             </Col>

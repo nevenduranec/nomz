@@ -85,6 +85,7 @@ var Main = React.createClass({
                 />
                 <Grid>
                     {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, openPlacesModal: this.state.openPlacesModal })}
+                    <Row center="xs"><h1>Bon appétit!</h1></Row>
                 </Grid>
             </div>
         )

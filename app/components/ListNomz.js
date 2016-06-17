@@ -37,7 +37,8 @@ const iconButtonElement = (
 function ListNomz (props) {
 
     var createItem = function(item, index) {
-        var edit = false;
+        var edit = false,
+            row = false;
 
         if (props.user && props.user.uid === item.user.uid){
             edit = true;
@@ -46,10 +47,14 @@ function ListNomz (props) {
         if (item.place !== 'Select a place'){
             edit = true;
         }
+
+        if (index % 3 === 0){
+            row = true;
+        }
         return (
-            <Col xs={12} key={ index }>
-            <List>
-                { index > 0 && <Divider /> }
+            <Col xs={12} md={6} lg={4} key={ index }>
+            <List className="Nomz-item">
+
                 <ListItem
                     disabled={true}
                     leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
@@ -71,12 +76,13 @@ function ListNomz (props) {
                     <div className="Nomz-info">
                         <span className="Nomz-place">
                         { item.place !== 'Select a place' ? <PlaceIcon /> : '' }{ item.place !== 'Select a place' ? item.place : '' }</span>
-                        <span className="Nomz-price"><PriceIcon /> { item.nomPrice }kn</span>
+                        <span className="Nomz-price"><PriceIcon /> { item.nomPrice } kn</span>
                         <span className="Nomz-time"><TimeIcon /> <Timestamp date={ item.time } /></span>
                     </div>
                     }
                     secondaryTextLines={2}
                 />
+
             </List>
             </Col>
         );
@@ -89,7 +95,7 @@ function ListNomz (props) {
         if (props.noResults){
             return <Row center="xs"><h1>No orders yet :/</h1></Row>
         } else {
-            return <span><Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row><Paper zDepth={1} rounded={false}><Row>{ props.items.map(createItem) }</Row></Paper></span>
+            return <span><Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row><Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}><Row className="fb-stretch">{ props.items.map(createItem) }</Row></Paper></span>
         }
     }
 
