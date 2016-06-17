@@ -59,7 +59,12 @@ var Main = React.createClass({
         return (
             <div className="Main">
                 <AppBar
-                    title={<span className="Logos"><img src={require('../assets/images/logo_burza.png')} /><img src={require('../assets/images/logo.png')} /></span>}
+                    title={
+                        <span className="Logos">
+                            <span className="Logos-burza"><img src={require('../assets/images/logo_burza.png')} /></span>
+                            <img src={require('../assets/images/logo.png')} />
+                        </span>
+                    }
                     showMenuIconButton={false}
                     iconElementRight={
                         this.state.loggedIn ?

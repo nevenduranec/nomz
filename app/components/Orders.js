@@ -8,6 +8,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import PersonIcon from 'material-ui/svg-icons/social/person';
 import Dialog from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
@@ -417,13 +418,19 @@ var OrderContainer = React.createClass({
                     </form>
                 </Dialog>
 
-                <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
-                    <ContentAdd />
-                </FloatingActionButton>
-
-                { !this.props.loggedIn && <FloatingActionButton onTouchTap={this.signInWithGoogle} style={{position: 'fixed', bottom: '20px', right: '20px'}}>
+                { this.props.loggedIn && <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}
+                secondary={true}
+                >
                     <ContentAdd />
                 </FloatingActionButton>}
+
+                { !this.props.loggedIn && <RaisedButton
+                    onTouchTap={this.signInWithGoogle} style={{position: 'fixed', bottom: '20px', right: '20px'}}
+                    secondary={true}
+                    label="Login"
+                    icon={<PersonIcon />}
+                />
+                }
 
             </Grid>
 

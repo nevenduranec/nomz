@@ -16,7 +16,8 @@ const muiTheme = getMuiTheme({
         desktopKeylineIncrement: 84
     },
     palette: {
-      primary1Color: "#9F005A",
+      primary1Color: '#9F005A',
+      accent1Color: '#55D955'
     },
 });
 
