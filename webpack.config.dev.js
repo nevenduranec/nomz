@@ -96,7 +96,8 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
             })
         ],
         node: {
-            fs: "empty",
-            child_process: 'empty'
+            fs: 'empty',
+            child_process: 'empty',
+            net: 'empty'
         }
     };
