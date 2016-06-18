@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.dev.js --progress --inline --colors --hot",
-    "deploy": "webpack -p && cp -R app/assets/ dist/assets/ && firebase deploy"
+    "deploy": "webpack && cp -R app/assets/ dist/assets/ && firebase deploy"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +20,7 @@
     "autoprefixer": "^6.3.6",
     "babel-core": "^6.9.1",
     "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015-webpack": "^6.4.1",
     "babel-preset-react": "^6.5.0",
     "classnames": "^2.2.5",
     "clean-webpack-plugin": "^0.1.9",
@@ -39,7 +39,7 @@
     "slimerjs": "^0.906.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack": "^2.1.0-beta.4",
+    "webpack-dev-server": "^2.0.0-beta"
   }
 }
