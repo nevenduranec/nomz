@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.config.dev.js --progress --inline --colors --hot",
+    "start": "webpack-dev-server --config webpack.config.dev.js --progress --inline --hot",
     "deploy": "webpack && cp -R app/assets/ dist/assets/ && firebase deploy"
   },
   "author": "",

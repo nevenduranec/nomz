@@ -37,6 +37,14 @@ function ListPlaces (props) {
         if (props.user.uid === item.user.uid){
             edit = true;
         }
+
+        // d22cf61a26344d2691b0c7f48541dfc2
+
+        // $.getJSON('https://api.embedly.com/1/oembed?' + $.param({
+        //   url: 'https://www.youtube.com/watch?v=jofNR_WkoCE',
+        //   key: ":key"
+        // }));
+
         return (
             <Col xs={12} key={ index }>
             <Card>
