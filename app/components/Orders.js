@@ -3,6 +3,7 @@ var ReactFireMixin = require('reactfire');
 var ListNomz = require('./ListNomz');
 var ListPlaces = require('./ListPlaces');
 var ReactDOM = require('react-dom');
+var axios = require('axios');
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -195,29 +196,56 @@ var OrderContainer = React.createClass({
         e.preventDefault();
 
         var isEdit = this.state.editPlace ? true : false;
-
+        
         if (!isEdit){
-            this._fbAdd('places',{
-                user: {
-                    name: this.state.user.displayName,
-                    email: this.state.user.email,
-                    uid: this.state.user.uid,
-                    photoURL: this.state.user.photoURL
-                },
-                placeName: this.refs.placeName.input.value,
-                placeURL: this.refs.placeURL.input.value,
-                time: Date.now()
+            axios.get('https://api.embedly.com/1/oembed?', {
+                params: {
+                  key: ':d22cf61a26344d2691b0c7f48541dfc2',
+                  url: this.refs.placeURL.input.value
+                }
+            })
+            .then(function (response) {
+                this._fbAdd('places',{
+                    user: {
+                        name: this.state.user.displayName,
+                        email: this.state.user.email,
+                        uid: this.state.user.uid,
+                        photoURL: this.state.user.photoURL
+                    },
+                    placeName: this.refs.placeName.input.value,
+                    placeURL: this.refs.placeURL.input.value,
+                    placeImage: response.data.thumbnail_url,
+                    time: Date.now()
+                });
+                this.openCloseModal('close','placesModal');
+            }.bind(this))
+            .catch(function (err) {
+                console.warn('Error in handleSubmitPlace: ', err)
             });
+
         } else {
-            this._fbUpdate('firebaseRefPlaces', this.state.editPlace, {
-                placeName: this.refs.placeName.input.value,
-                placeURL: this.refs.placeURL.input.value,
-                time: Date.now()
+            axios.get('https://api.embedly.com/1/oembed?', {
+                params: {
+                  key: ':d22cf61a26344d2691b0c7f48541dfc2',
+                  url: this.refs.placeURL.input.value
+                }
+            })
+            .then(function (response) {
+                this._fbUpdate('firebaseRefPlaces', this.state.editPlace, {
+                    placeName: this.refs.placeName.input.value,
+                    placeURL: this.refs.placeURL.input.value,
+                    placeImage: response.data.thumbnail_url,
+                    time: Date.now()
+                });
+                this.state.editPlace = false;
+                this.openCloseModal('close','placesModal');
+            }.bind(this))
+            .catch(function (err) {
+                console.warn('Error in handleSubmitPlace: ', err)
             });
-            this.state.editPlace = false;
         }
 
-        this.openCloseModal('close','placesModal');
+
 
     },
 

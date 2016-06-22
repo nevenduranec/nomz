@@ -82,9 +82,14 @@ h2 {
     align-items: stretch;
 
     > div {
-        border-right: #e3e3e3 1px solid;
-        border-bottom: #e3e3e3 1px solid;
+        background: #fff;
+        margin: -1px -1px 0 0;
+        border: #e3e3e3 1px solid;
     }
+}
+
+.fb-center {
+    justify-content: center;
 }
 
 .Main {

@@ -95,7 +95,7 @@ function ListNomz (props) {
         if (props.noResults){
             return <Row center="xs"><h1>No orders yet :/</h1></Row>
         } else {
-            return <span><Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row><Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}><Row className="fb-stretch">{ props.items.map(createItem) }</Row></Paper></span>
+            return <span><Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row><Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}><Row className="fb-stretch fb-center">{ props.items.map(createItem) }</Row></Paper></span>
         }
     }
 

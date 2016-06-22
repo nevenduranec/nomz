@@ -32,21 +32,15 @@ const iconButtonElement = (
 function ListPlaces (props) {
 
     var createItem = function(item, index) {
-        var edit = false;
+        var edit = false,
+            placeImage = '';
 
         if (props.user.uid === item.user.uid){
             edit = true;
         }
 
-        // d22cf61a26344d2691b0c7f48541dfc2
-
-        // $.getJSON('https://api.embedly.com/1/oembed?' + $.param({
-        //   url: 'https://www.youtube.com/watch?v=jofNR_WkoCE',
-        //   key: ":key"
-        // }));
-
         return (
-            <Col xs={12} key={ index }>
+            <Col xs={6} key={ index }>
             <Card>
                 <CardHeader
                     title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
@@ -54,7 +48,7 @@ function ListPlaces (props) {
                     subtitle={ <Timestamp date={ item.time } /> }
                 />
                 <CardMedia>
-                    <iframe src={"https://www.google.com/search?q=%" + item.placeURL + '&btnI=Im+Feeling+Lucky'} width="100%" height="500px" frameborder="0"></iframe>
+                    <img src={item.placeImage} />
                 </CardMedia>
                 <CardTitle title={<a className="Place-link" href={item.placeURL}>{item.placeName}</a>} />
                 <CardActions style={{padding: 0}}>
@@ -76,7 +70,7 @@ function ListPlaces (props) {
         if (props.noResults){
             return <Row center="xs"><h1>No places yet :/</h1></Row>
         } else {
-             return <span><Row center="xs"><Col xs={12}><h1>Today's menu</h1></Col></Row><Row>{ props.items.map(createItem) }</Row></span>
+             return <span><Row center="xs"><Col xs={12}><h1>Today's menu</h1></Col></Row><Row className="fb-center">{ props.items.map(createItem) }</Row></span>
         }
     }
 
