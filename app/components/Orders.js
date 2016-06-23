@@ -5,6 +5,7 @@ var ListPlaces = require('./ListPlaces');
 var ReactDOM = require('react-dom');
 var axios = require('axios');
 
+import CircularProgress from 'material-ui/CircularProgress';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -196,7 +197,11 @@ var OrderContainer = React.createClass({
         e.preventDefault();
 
         var isEdit = this.state.editPlace ? true : false;
-        
+
+        this.setState({
+            loadingInModal: true
+        });
+
         if (!isEdit){
             axios.get('https://api.embedly.com/1/oembed?', {
                 params: {
@@ -218,6 +223,9 @@ var OrderContainer = React.createClass({
                     time: Date.now()
                 });
                 this.openCloseModal('close','placesModal');
+                this.setState({
+                    loadingInModal: false
+                });
             }.bind(this))
             .catch(function (err) {
                 console.warn('Error in handleSubmitPlace: ', err)
@@ -239,6 +247,10 @@ var OrderContainer = React.createClass({
                 });
                 this.state.editPlace = false;
                 this.openCloseModal('close','placesModal');
+                this.setState({
+                    loadingInModal: false
+                });
+
             }.bind(this))
             .catch(function (err) {
                 console.warn('Error in handleSubmitPlace: ', err)
@@ -418,6 +430,9 @@ var OrderContainer = React.createClass({
                 actions={actionsPlaces}
                 onRequestClose={this.openCloseModal.bind(null,'close', 'placesModal')}
                 >
+                    {
+                        this.state.loadingInModal && <CircularProgress className="loadingModal" />
+                    }
 
                     <form onSubmit={this.handleSubmitPlace}>
                         <Row>
@@ -444,6 +459,8 @@ var OrderContainer = React.createClass({
                             <FlatButton type="submit" style={{display: 'none'}}>Submit</FlatButton>
                         </Row>
                     </form>
+
+
                 </Dialog>
 
                 { this.props.loggedIn && <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}

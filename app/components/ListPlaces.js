@@ -47,7 +47,7 @@ function ListPlaces (props) {
                     avatar={ item.user.photoURL }
                     subtitle={ <Timestamp date={ item.time } /> }
                 />
-                <CardMedia>
+                <CardMedia className="Place-image">
                     <img src={item.placeImage} />
                 </CardMedia>
                 <CardTitle title={<a className="Place-link" href={item.placeURL}>{item.placeName}</a>} />

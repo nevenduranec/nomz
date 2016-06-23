@@ -77,11 +77,24 @@ h1 {
     font-size: 50px;
 }
 
-    .Place-link {
-        color: #FF7400;
-        font-weight: normal;
-        font-size: 40px;
+
+.Place-link {
+    font-weight: normal;
+    font-size: 40px;
+    text-decoration: underline;
+}
+
+.Place-image {
+    height: 150px;
+    overflow: hidden;
+
+    img {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(0,-50%);
     }
+}
 
 h2 {
     font-weight: bold;
@@ -133,4 +146,22 @@ h2 {
         margin: 5px 0;
     }
 
+}
+
+.loadingModal {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1212121; // MEGALON
+    margin: 0 !important;
+
+    > div {
+        position: absolute !important;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
 }
