@@ -58,6 +58,7 @@ var Main = React.createClass({
     render: function () {
         return (
             <div className="Main">
+                {this.props.children &&
                 <AppBar
                     title={
                         <span className="Logos">
@@ -82,10 +83,10 @@ var Main = React.createClass({
                         :
                         <div></div>
                     }
-                />
+                />}
                 <Grid>
-                    {React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, openPlacesModal: this.state.openPlacesModal })}
-                    <Row center="xs"><h1>Bon appétit!</h1></Row>
+                    {this.props.children ? React.cloneElement(this.props.children, { loggedIn: this.state.loggedIn, openPlacesModal: this.state.openPlacesModal }) : <Row center="xs"><img src={require('../assets/images/logo.png')} className="IntroLogo"/></Row>}
+                    {this.props.children && <Row center="xs"><h1>Bon appétit!</h1></Row>}
                 </Grid>
             </div>
         )
