@@ -210,6 +210,7 @@ var OrderContainer = React.createClass({
                 }
             })
             .then(function (response) {
+
                 this._fbAdd('places',{
                     user: {
                         name: this.state.user.displayName,
@@ -219,7 +220,7 @@ var OrderContainer = React.createClass({
                     },
                     placeName: this.refs.placeName.input.value,
                     placeURL: this.refs.placeURL.input.value,
-                    placeImage: response.data.thumbnail_url,
+                    placeImage: response.data.thumbnail_url || null,
                     time: Date.now()
                 });
                 this.openCloseModal('close','placesModal');
