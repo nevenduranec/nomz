@@ -22,6 +22,7 @@ import PriceIcon from 'material-ui/svg-icons/editor/monetization-on';
 import PlaceIcon from 'material-ui/svg-icons/maps/place';
 
 import Paper from 'material-ui/Paper';
+import Toggle from 'material-ui/Toggle';
 
 const iconButtonElement = (
     <IconButton
@@ -36,57 +37,61 @@ const iconButtonElement = (
 
 function ListNomz (props) {
 
-    var createItem = function(item, index) {
-        var edit = false,
-            row = false;
+    var total = 0,
+        createItem = function(item, index) {
+            var edit = false,
+                row = false;
 
-        if (props.user && props.user.uid === item.user.uid){
-            edit = true;
-        }
+            if (props.user && props.user.uid === item.user.uid){
+                edit = true;
+            }
 
-        if (item.place !== 'Select a place'){
-            edit = true;
-        }
+            if (item.place !== 'Select a place'){
+                edit = true;
+            }
 
-        if (index % 3 === 0){
-            row = true;
-        }
-        return (
-            <Col xs={12} md={6} lg={4} key={ index }>
-            <List className="Nomz-item">
+            if (index % 3 === 0){
+                row = true;
+            }
 
-                <ListItem
-                    disabled={true}
-                    leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
+            total += parseInt(item.nomPrice);
 
-                    rightIconButton={
-                        props.loggedIn ?
-                        <IconMenu iconButtonElement={iconButtonElement}>
-                            <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
-                            { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>}
-                            { edit && <Divider />}
-                            { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
-                        </IconMenu>
-                        :
-                        <div></div>
-                    }
+            return (
+                <Col xs={12} md={6} lg={4} key={ index }>
+                <List className="Nomz-item">
 
-                    primaryText={<h2 className="Nomz-title">{ item.nom }</h2>}
-                    secondaryText={
-                    <div className="Nomz-info">
-                        <span className="Nomz-place">
-                        { item.place !== 'Select a place' ? <PlaceIcon /> : '' }{ item.place !== 'Select a place' ? item.place : '' }</span>
-                        <span className="Nomz-price"><PriceIcon /> { item.nomPrice } kn</span>
-                        <span className="Nomz-time"><TimeIcon /> <Timestamp date={ item.time } /></span>
-                    </div>
-                    }
-                    secondaryTextLines={2}
-                />
+                    <ListItem
+                        disabled={true}
+                        leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
 
-            </List>
-            </Col>
-        );
-    };
+                        rightIconButton={
+                            props.loggedIn ?
+                            <IconMenu iconButtonElement={iconButtonElement}>
+                                <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
+                                { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>}
+                                { edit && <Divider />}
+                                { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
+                            </IconMenu>
+                            :
+                            <div></div>
+                        }
+
+                        primaryText={<h2 className="Nomz-title">{ item.nom }</h2>}
+                        secondaryText={
+                        <div className="Nomz-info">
+                            <span className="Nomz-place">
+                            { item.place !== 'Select a place' ? <PlaceIcon /> : '' }{ item.place !== 'Select a place' ? item.place : '' }</span>
+                            <span className="Nomz-price"><PriceIcon /> { item.nomPrice } kn</span>
+                            <span className="Nomz-time"><TimeIcon /> <Timestamp date={ item.time } /></span>
+                        </div>
+                        }
+                        secondaryTextLines={2}
+                    />
+
+                </List>
+                </Col>
+            );
+        };
 
 
     if (props.isLoading === true) {
@@ -95,7 +100,13 @@ function ListNomz (props) {
         if (props.noResults){
             return <Row center="xs"><h1>No orders yet :/</h1></Row>
         } else {
-            return <span><Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row><Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}><Row className="fb-stretch fb-center">{ props.items.map(createItem) }</Row></Paper></span>
+            return <span>
+                <Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row>
+                <Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}>
+                    <Row className="fb-stretch fb-center">{ props.items.map(createItem) }</Row>
+                </Paper>
+                <Row center="xs"><h2>Total: { total }</h2></Row>
+            </span>
         }
     }
 
