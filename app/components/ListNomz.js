@@ -86,7 +86,7 @@ function ListNomz (props) {
                                 <div></div>
                         }
 
-                        primaryText={<div><span className="Nomz-user">{ item.user.name ? item.user.name : item.user.email }</span><h2 className="Nomz-title">{ item.nom }</h2></div>}
+                        primaryText={<div><span className="Nomz-user">{ item.user.name ? item.user.name : item.user.email.replace('@burza.hr','').replace('@gmail.com','') }</span><h2 className="Nomz-title">{ item.nom }</h2></div>}
                         secondaryText={
                         <div className="Nomz-info">
                             <span className="Nomz-place">
