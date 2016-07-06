@@ -66,13 +66,14 @@ function ListNomz (props) {
                         leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
 
                         rightIconButton={
-                            props.loggedIn ?
+                            props.loggedIn && edit ?
                             <IconMenu iconButtonElement={iconButtonElement}>
-                                <MenuItem onTouchTap={props.onPlusOne.bind(null, item)} leftIcon={<PlusOneIcon />}>+1</MenuItem>
-                                { edit && <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>}
-                                { edit && <Divider />}
-                                { edit && item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
+                                <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>
+                                <Divider />
+                                { item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
                             </IconMenu>
+                            :
+                            props.loggedIn ? <MenuItem onTouchTap={props.onPlusOne.bind(null, item)}>{<PlusOneIcon />}</MenuItem>
                             :
                             <div></div>
                         }
