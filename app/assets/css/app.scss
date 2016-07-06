@@ -73,26 +73,39 @@ iframe {
 
 
 h1 {
-    font-family: 'Shadows Into Light Two', cursive;
+    font-family: 'Jaldi';
     font-size: 50px;
+    font-weight: 400;
 }
 
+h2 {
+    font-family: 'Jaldi';
+    font-size: 35px;
+}
+
+.Place {
+    margin: 10px 0;
+}
 
 .Place-link {
     font-weight: normal;
-    font-size: 40px;
-    text-decoration: underline;
+    font-size: 30px;
+    text-decoration: none;
+    color: #f94a38;
+    display: block;
 }
 
 .Place-image {
-    height: 150px;
+    height: 250px;
     overflow: hidden;
+    margin: 0 10px;
 
     img {
         position: absolute;
-        left: 0;
+        width: 100%;
+        left: 50%;
         top: 50%;
-        transform: translate(0,-50%);
+        transform: translate(-50%,-50%);
     }
 }
 
@@ -123,7 +136,7 @@ h2 {
 }
 
 .Nomz-title {
-    margin-top: 10px;
+    margin-top: 0;
     line-height: 1.2;
 }
 

@@ -40,6 +40,7 @@ function ListNomz (props) {
     var total = 0,
         createItem = function(item, index) {
             var edit = false,
+                editPlace = false,
                 row = false;
 
             if (props.user && props.user.uid === item.user.uid){
@@ -47,7 +48,7 @@ function ListNomz (props) {
             }
 
             if (item.place !== 'Select a place'){
-                edit = true;
+                editPlace = true;
             }
 
             if (index % 3 === 0){
@@ -105,7 +106,7 @@ function ListNomz (props) {
                 <Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}>
                     <Row className="fb-stretch fb-center">{ props.items.map(createItem) }</Row>
                 </Paper>
-                <Row center="xs"><h2>Total: { total }</h2></Row>
+                <Row end="xs"><h2>Total: { total } kn</h2></Row>
             </span>
         }
     }

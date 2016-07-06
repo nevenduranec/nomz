@@ -313,6 +313,13 @@ var OrderContainer = React.createClass({
             selectedPlace: value
         });
     },
+    handleAddPlace: function() {
+        this.setState({
+            placesModal: {
+                open: true
+            },
+        });
+    },
     render: function() {
 
         var actions = [
@@ -350,6 +357,7 @@ var OrderContainer = React.createClass({
                 <ListPlaces
                     items={this.state.places}
                     onRemoveItem={ this.handleRemoveItem }
+                    onAddPlace={ this.handleAddPlace }
                     onEditItem={ this.handleEditItem }
                     user={this.state.user}
                     loggedIn={this.props.loggedIn}
@@ -455,6 +463,7 @@ var OrderContainer = React.createClass({
                                     required
                                     ref="placeURL"
                                     fullWidth={true}
+                                    value="http://"
                                 />
                             </Col>
                             <FlatButton type="submit" style={{display: 'none'}}>Submit</FlatButton>

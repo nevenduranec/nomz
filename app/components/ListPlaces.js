@@ -13,11 +13,12 @@ import {grey400, darkBlack, lightBlack} from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
-
+import ContentAddIcon from 'material-ui/svg-icons/content/add';
 
 const iconButtonElement = (
     <IconButton
@@ -40,25 +41,25 @@ function ListPlaces (props) {
         }
 
         return (
-            <Col xs={6} key={ index }>
-            <Card>
-                <CardHeader
-                    title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
-                    avatar={ item.user.photoURL }
-                    subtitle={ <Timestamp date={ item.time } /> }
-                />
-                <CardMedia className="Place-image">
-                    <img src={item.placeImage} />
-                </CardMedia>
-                <CardTitle title={<a className="Place-link" href={item.placeURL}>{item.placeName}</a>} />
-                <CardActions style={{padding: 0}}>
-                    { edit && <IconMenu iconButtonElement={iconButtonElement} style={{position: 'absolute', bottom: '7px', right: 0}}>
-                        <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'place')} leftIcon={<EditIcon />}>Edit</MenuItem>
-                        <Divider />
-                        <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'place')} leftIcon={<DeleteIcon />}>Delete</MenuItem>
-                    </IconMenu>}
-                </CardActions>
-            </Card>
+            <Col xs={6} key={ index } className="Place">
+                <Card>
+                    <CardHeader
+                        title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
+                        avatar={ item.user.photoURL }
+                        subtitle={ <Timestamp date={ item.time } /> }
+                    />
+                    <CardMedia className="Place-image">
+                        <a className="Place-link" href={'http://' + item.placeURL.replace('http://','')}><img src={item.placeImage} /></a>
+                    </CardMedia>
+                    <CardTitle title={<a className="Place-link" href={item.placeURL}>{item.placeName}</a>} />
+                    <CardActions style={{padding: 0}}>
+                        { edit && <IconMenu iconButtonElement={iconButtonElement} style={{position: 'absolute', bottom: '7px', right: 0}}>
+                            <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'place')} leftIcon={<EditIcon />}>Edit</MenuItem>
+                            <Divider />
+                            <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'place')} leftIcon={<DeleteIcon />}>Delete</MenuItem>
+                        </IconMenu>}
+                    </CardActions>
+                </Card>
             </Col>
         );
     };
@@ -68,7 +69,18 @@ function ListPlaces (props) {
         return <Row center="xs"><CircularProgress size={2} /></Row>
     } else {
         if (props.noResults){
-            return <Row center="xs"><h1>No places yet :/</h1></Row>
+            return (
+                <div>
+                    <Row center="xs"><h1>No places yet :/</h1></Row>
+                    <Row center="xs">
+                        <RaisedButton
+                            onTouchTap={props.onAddPlace}
+                            primary={true}
+                            label="Add place"
+                            icon={<ContentAddIcon />} />
+                    </Row>
+                </div>
+            )
         } else {
              return <span><Row center="xs"><Col xs={12}><h1>Today's menu</h1></Col></Row><Row className="fb-center">{ props.items.map(createItem) }</Row></span>
         }
