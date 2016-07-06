@@ -20,6 +20,7 @@ import EditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import PlusOneIcon from 'material-ui/svg-icons/social/plus-one';
 import PriceIcon from 'material-ui/svg-icons/editor/monetization-on';
 import PlaceIcon from 'material-ui/svg-icons/maps/place';
+import PersonIcon from 'material-ui/svg-icons/social/person';
 
 import Paper from 'material-ui/Paper';
 import Toggle from 'material-ui/Toggle';
@@ -63,7 +64,7 @@ function ListNomz (props) {
 
                     <ListItem
                         disabled={true}
-                        leftAvatar={<Avatar src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
+                        leftAvatar={<Avatar className="Nomz-avatar" src={ item.user.photoURL } title={ item.user.email.replace('@burza.hr','').replace('@gmail.com','') } />}
 
                         rightIconButton={
                             props.loggedIn && edit ?
@@ -85,7 +86,7 @@ function ListNomz (props) {
                                 <div></div>
                         }
 
-                        primaryText={<h2 className="Nomz-title">{ item.nom }</h2>}
+                        primaryText={<div><span className="Nomz-user">{ item.user.name ? item.user.name : item.user.email }</span><h2 className="Nomz-title">{ item.nom }</h2></div>}
                         secondaryText={
                         <div className="Nomz-info">
                             <span className="Nomz-place">
@@ -111,7 +112,7 @@ function ListNomz (props) {
         } else {
             return <span>
                 <Row center="xs"><Col xs={12}><h1>Orders</h1></Col></Row>
-                <Paper zDepth={1} rounded={false} style={{ overflow: 'hidden' }}>
+                <Paper zDepth={1} rounded={false} style={{'padding': '0 5px'}}>
                     <Row className="fb-stretch fb-center">{ props.items.map(createItem) }</Row>
                 </Paper>
                 <Row end="xs"><h2>Total: { total } kn</h2></Row>

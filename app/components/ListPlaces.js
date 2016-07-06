@@ -51,7 +51,7 @@ function ListPlaces (props) {
                     <CardMedia className="Place-image">
                         <a className="Place-link" href={'http://' + item.placeURL.replace('http://','')}><img src={item.placeImage} /></a>
                     </CardMedia>
-                    <CardTitle title={<a className="Place-link" href={item.placeURL}>{item.placeName}</a>} />
+                    <CardTitle title={<a className="Place-link" href={'http://' + item.placeURL.replace('http://','')}>{item.placeName}</a>} />
                     <CardActions style={{padding: 0}}>
                         { edit && <IconMenu iconButtonElement={iconButtonElement} style={{position: 'absolute', bottom: '7px', right: 0}}>
                             <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'place')} leftIcon={<EditIcon />}>Edit</MenuItem>
