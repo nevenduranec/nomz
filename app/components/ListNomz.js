@@ -67,15 +67,22 @@ function ListNomz (props) {
 
                         rightIconButton={
                             props.loggedIn && edit ?
-                            <IconMenu iconButtonElement={iconButtonElement}>
-                                <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>
-                                <Divider />
-                                { item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
-                            </IconMenu>
+                                <IconMenu iconButtonElement={iconButtonElement}>
+                                    <MenuItem onTouchTap={props.onEditItem.bind(null, index, item['.key'], 'nom')} leftIcon={<EditIcon />}>Edit</MenuItem>
+                                    <Divider />
+                                    { item.user && <MenuItem onTouchTap={props.onRemoveItem.bind(null, item['.key'], item.user.uid, 'nom')} leftIcon={<DeleteIcon />}>Delete</MenuItem>}
+                                </IconMenu>
                             :
-                            props.loggedIn ? <MenuItem onTouchTap={props.onPlusOne.bind(null, item)}>{<PlusOneIcon />}</MenuItem>
+                            props.loggedIn ? <IconButton
+                                    onTouchTap={props.onPlusOne.bind(null, item)}
+                                    touch={true}
+                                    tooltip="I want this too!"
+                                    tooltipPosition="bottom-right"
+                                >
+                                    <PlusOneIcon color={grey400} />
+                                </IconButton>
                             :
-                            <div></div>
+                                <div></div>
                         }
 
                         primaryText={<h2 className="Nomz-title">{ item.nom }</h2>}
