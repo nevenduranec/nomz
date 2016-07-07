@@ -72,13 +72,15 @@ function ListPlaces (props) {
             return (
                 <div>
                     <Row center="xs"><h1>No places yet :/</h1></Row>
-                    <Row center="xs">
+                    {props.loggedIn ? <Row center="xs">
                         <RaisedButton
                             onTouchTap={props.onAddPlace}
                             primary={true}
                             label="Add place"
                             icon={<ContentAddIcon />} />
                     </Row>
+                    :
+                    <div></div>}
                 </div>
             )
         } else {
