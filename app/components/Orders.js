@@ -463,7 +463,6 @@ var OrderContainer = React.createClass({
                                     required
                                     ref="placeURL"
                                     fullWidth={true}
-                                    value="http://"
                                 />
                             </Col>
                             <FlatButton type="submit" style={{display: 'none'}}>Submit</FlatButton>
