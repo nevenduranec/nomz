@@ -472,6 +472,7 @@ var OrderContainer = React.createClass({
 
                 </Dialog>
 
+                <Row>
                 { this.props.loggedIn && <FloatingActionButton onTouchTap={this.openCloseModal.bind(null,'open', 'orderModal')} style={{position: 'fixed', bottom: '20px', right: '20px'}}
                 secondary={true}
                 >
@@ -485,6 +486,7 @@ var OrderContainer = React.createClass({
                     icon={<PersonIcon />}
                 />
                 }
+                </Row>
 
             </Grid>
 

@@ -24,7 +24,7 @@ const iconButtonElement = (
     <IconButton
         touch={true}
         tooltip="Actions"
-        tooltipPosition="bottom-right"
+        tooltipPosition="top-left"
     >
         <MoreVertIcon color={grey400} />
     </IconButton>
@@ -42,7 +42,7 @@ function ListPlaces (props) {
 
         return (
             <Col xs={12} md={6} key={ index } className="Place">
-                <Card>
+                <Card style={{overflow: 'hidden'}}>
                     <CardHeader
                         title={ item.user.name ? item.user.name : item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
                         avatar={ item.user.photoURL }
@@ -84,7 +84,7 @@ function ListPlaces (props) {
                 </div>
             )
         } else {
-             return <span><Row center="xs"><Col xs={12}><h1>Today's menu</h1></Col></Row><Row className="fb-center">{ props.items.map(createItem) }</Row></span>
+             return <span className="PlacesHolder"><Row center="xs"><Col xs={12}><h1>Today's menu</h1></Col></Row><Row className="fb-center">{ props.items.map(createItem) }</Row></span>
         }
     }
 
