@@ -41,7 +41,7 @@ function ListPlaces (props) {
         }
 
         return (
-            <Col xs={6} key={ index } className="Place">
+            <Col xs={12} md={6} key={ index } className="Place">
                 <Card>
                     <CardHeader
                         title={ item.user.name ? item.user.name : item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
