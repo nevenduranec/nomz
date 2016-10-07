@@ -49,7 +49,7 @@ function ListPlaces (props) {
                         subtitle={ <Timestamp date={ item.time } /> }
                     />
                     <CardMedia className="Place-image">
-                        <a className="Place-link" href={'http://' + item.placeURL.replace('http://','')}><img src={item.placeImage} /></a>
+                        <a className="Place-link" href={'http://' + item.placeURL.replace('https://','').replace('http://','')}><img src={item.placeImage} /></a>
                     </CardMedia>
                     <CardTitle title={<a className="Place-link" href={'http://' + item.placeURL.replace('http://','')}>{item.placeName}</a>} />
                     <CardActions style={{padding: 0}}>
