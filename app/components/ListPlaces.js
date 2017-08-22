@@ -44,7 +44,7 @@ function ListPlaces (props) {
             <Col xs={12} md={6} key={ index } className="Place">
                 <Card style={{overflow: 'hidden'}}>
                     <CardHeader
-                        title={ item.user.name ? item.user.name : item.user.email.replace('@burza.hr','').replace('@gmail.com','') }
+                        title={ item.user.name ? item.user.name : item.user.email.replace('@trikoder.net','').replace('@gmail.com','') }
                         avatar={ item.user.photoURL }
                         subtitle={ <Timestamp date={ item.time } /> }
                     />

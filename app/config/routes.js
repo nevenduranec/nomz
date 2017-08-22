@@ -25,7 +25,7 @@ var routes = (
     <MuiThemeProvider muiTheme={muiTheme}>
         <Router history={hashHistory}>
             <Route path='/' component={Main}>
-                <Route path="webburza" component={Orders} />
+                <Route path="orders" component={Orders} />
             </Route>
         </Router>
     </MuiThemeProvider>

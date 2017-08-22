@@ -8,10 +8,12 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import Divider from 'material-ui/Divider';
 
 var firebaseConfig = {
-    apiKey: "AIzaSyDPJ293TkV64b5qJoJU5VdNrOPJkEf9Ths",
-    authDomain: "react-5f9c4.firebaseapp.com",
-    databaseURL: "https://react-5f9c4.firebaseio.com",
-    storageBucket: "react-5f9c4.appspot.com",
+    apiKey: "AIzaSyB5oZ-9giafN5zEK3YRPHtK4JhUnuDh0pU",
+    authDomain: "nomz-6d3bb.firebaseapp.com",
+    databaseURL: "https://nomz-6d3bb.firebaseio.com",
+    projectId: "nomz-6d3bb",
+    storageBucket: "nomz-6d3bb.appspot.com",
+    messagingSenderId: "707080662890"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -62,7 +64,6 @@ var Main = React.createClass({
                 <AppBar
                     title={
                         <span className="Logos">
-                            <span className="Logos-burza"><img src={require('../assets/images/logo_burza.png')} /></span>
                             <img src={require('../assets/images/logo.png')} />
                         </span>
                     }
